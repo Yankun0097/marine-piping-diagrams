@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>潤滑油轉送與分油系統 — 互動詳解版</title>
+  <style>
+    :root{
+      --purple:#b04fd9; --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b; --yellow:#ffd94d;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd; --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif}
+    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);padding:16px 24px;z-index:8}
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{max-width:1080px;margin:auto;padding:24px;display:grid;grid-template-columns:340px 1fr;gap:24px}
+    @media (max-width:960px){main{grid-template-columns:1fr}}
+    .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;box-shadow:0 1px 2px rgba(15,23,42,.05)}
+    .diagram{width:100%;border-radius:8px;border:1px solid var(--border);position:relative}
+    .hotspot{position:absolute;border-radius:50%;cursor:pointer;opacity:0.3;transition:all .2s ease-in-out}
+    .hotspot:hover{opacity:1;transform:scale(1.2)}
+    .tooltip{position:absolute;background:rgba(0,0,0,.8);color:#fff;padding:6px 10px;border-radius:6px;font-size:.85rem;white-space:nowrap;transform:translate(-50%, -130%);display:none}
+    .hotspot:hover .tooltip{display:block}
+    .legend{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .chip{display:flex;align-items:center;gap:10px;border:1px dashed var(--border);border-radius:10px;padding:8px;background:#fff}
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .purple{background:var(--purple)}.orange{background:var(--orange)}.blue{background:var(--blue)}.green{background:var(--green)}.yellow{background:var(--lightyellow)}
+    .note{border-left:4px solid var(--accent);background:#eff6ff;padding:10px 14px;margin-top:8px;border-radius:8px}
+    details{border:1px solid var(--border);border-radius:8px;margin-top:10px;padding:10px 14px;background:#fff}
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{position:fixed;right:16px;bottom:16px;background:#ffffff; border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.08);padding:8px 12px;border-radius:10px;color:var(--muted);font-size:.85rem}
+    .brand{font-weight:600}
+    
+    .lightyellow{background:#fff8b0}
+    .deepyellow{background:#e6b800}
+
+</style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶輔鍋爐與潤滑油系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">潤滑油轉送與分油系統｜L.O. Transfer & Purification System</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch purple"></span> 紫色：回油/吸入（Return / Suction）</div>
+<div class="chip"><span class="swatch orange"></span> 橘色：排放/放空（Discharge / Drain）</div>
+<div class="chip"><span class="swatch deepyellow"></span> 深黃色：轉送主線（Transfer Main）</div>
+<div class="chip"><span class="swatch green"></span> 綠色：旁路/支路（Bypass / Branch）</div>
+<div class="chip"><span class="swatch lightyellow"></span> 淺黃色：主要設備（Purifier, Heater, Tanks）</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（點擊顯示詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="lo_trans_purif.jpg" alt="L.O. Transfer & Purification System" />
+        <div class="hotspot" style="top:29%;left:74%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('purifier_me')"><div class="tooltip">① M/E L.O. PURIFIER（主機潤滑油分油機）</div></div>
+<div class="hotspot" style="top:29%;left:88%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('purifier_ge')"><div class="tooltip">② G/E L.O. PURIFIER（副機潤滑油分油機）</div></div>
+<div class="hotspot" style="top:17%;left:67%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('heater')"><div class="tooltip">③ L.O. HEATER（潤滑油加熱器）</div></div>
+<div class="hotspot" style="top:89%;left:47%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('sludge')"><div class="tooltip">④ SLUDGE TANK（污泥槽）</div></div>
+<div class="hotspot" style="top:9%;left:32%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('settling')"><div class="tooltip">⑤ SETTLING TANKS（沉降槽）</div></div>
+<div class="hotspot" style="top:79%;left:61%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('transfer_pump')"><div class="tooltip">⑥ L.O. TRANSFER/PREFILTERED PUMP（轉送/預濾泵）</div></div>
+<div class="hotspot" style="top:88%;left:33%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('me_sump')"><div class="tooltip">⑦ M/E L.O. SUMP TANK（主機油底）</div></div>
+<div class="hotspot" style="top:51%;left:54%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('main')"><div class="tooltip">⑧ TRANSFER MAIN（轉送主線）</div></div>
+      </div>
+      <div class="note">💡 滑鼠移至圓點顯示名稱，點擊則展開下方詳細說明；版面採白底淺灰風格。</div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>詳細部件說明</h2>
+      <details id="purifier_me"><summary>① 主機潤滑油分油機（M/E L.O. Purifier）</summary><p>離心力分離水分與固體雜質，維持油品清潔度（ISO 代碼）。</p></details>
+<details id="purifier_ge"><summary>② 副機潤滑油分油機（G/E L.O. Purifier）</summary><p>與主機線路相似，依機型選擇連續/間歇運轉模式。</p></details>
+<details id="heater"><summary>③ 潤滑油加熱器（L.O. Heater）</summary><p>提高油溫以降低黏度，提升分油效率；需防止過熱裂解。</p></details>
+<details id="sludge"><summary>④ 污泥槽（Sludge Tank）</summary><p>分離出的含水油渣收集於此，定期外運或焚燒處理。</p></details>
+<details id="settling"><summary>⑤ 沉降槽/儲存槽（Settling / Storage Tanks）</summary><p>靜置分層去除游離水與懸浮物，作為分油或供油前置。</p></details>
+<details id="transfer_pump"><summary>⑥ 轉送/預濾泵（Transfer / Pre-filtered Pump）</summary><p>將油品由儲槽送往加熱器/分油機；注意吸入阻力與濾器壓差。</p></details>
+<details id="me_sump"><summary>⑦ 主機油底（M/E Sump）</summary><p>回油來源之一，經沉降與分油後回補清油槽。</p></details>
+<details id="main"><summary>⑧ 轉送主線（Transfer Main）</summary><p>各槽/設備之間的骨幹管路，配置止回、截止與取樣點。</p></details>
+    </section>
+  
+    <section class="card">
+      <h2>潤滑油轉送與分油系統完整解析（L.O. Transfer & Purification System Overview）</h2>
+      <p>潤滑油轉送與分油系統負責<strong>油品的儲存、轉送、加熱與淨化</strong>，確保送往主機與副機的油品
+      保持在合格清潔度與適當黏度。此系統通常與沉降槽（Settling Tank）、儲存槽（Storage Tank）、
+      分油機（Purifier）、加熱器（Heater）、污泥槽（Sludge Tank）及供油系統緊密連結。</p>
+      <details>
+        <summary>▶ 流程一：由沉降槽至分油機</summary>
+        <p>新油或回收油先進入沉降槽，利用時間與溫度進行重力分層，初步去除游離水與粗大雜質。
+        之後經轉送/預濾泵（Transfer / Pre-filtered Pump）送往潤滑油加熱器，提高油溫以降低黏度，
+        為後續離心分油創造良好條件。</p>
+      </details>
+      <details>
+        <summary>▶ 流程二：分油機（Purifier）淨化階段</summary>
+        <p>加熱後之潤滑油進入分油機，透過高速旋轉產生的離心力，將水分與固體雜質自清油中分離。
+        分離出的含水油渣會集中至污泥槽（Sludge Tank），而清潔潤滑油則流入清油槽或回補供油系統。</p>
+      </details>
+      <details>
+        <summary>▶ 流程三：清油回補與系統循環</summary>
+        <p>經分油淨化後的清潔潤滑油，可用於補充主機與副機潤滑油油底，或作為新一輪供油循環的來源。
+        操作時須注意各槽液位、油溫與分油機負荷，並避免將嚴重劣化之油品再度混入系統。</p>
+      </details>
+      <details>
+        <summary>▶ 操作與安全注意事項</summary>
+        <p>常見重點包含：分油機碗體轉速與震動監控、加熱蒸汽壓力與溫度控制、污泥槽定期排放、
+        以及防止錯誤切換至錯誤油槽等。任何閥位誤操作，都可能造成油品交叉污染或溢油事故。</p>
+      </details>
+      <p>圖中深黃色管路代表油品轉送與處理之主流程，淺黃色設備則標示出加熱器、分油機、
+      各槽與泵的相對位置，有助於學習者從「油品生命週期」的角度理解整套潤滑油管理機制。</p>
+    </section>
+
+    <section class="card">
+      <h2>潤滑油轉送／分油系統熱點顏色對照（①～⑩）</h2>
+      <ul>
+        <li>① M/E PURIFIER → 淺黃色（設備）</li>
+<li>② G/E PURIFIER → 淺黃色（設備）</li>
+<li>③ L.O. HEATER → 淺黃色（設備）</li>
+<li>④ SLUDGE TANK → 淺黃色（設備）</li>
+<li>⑤ SETTLING TANK → 淺黃色（設備）</li>
+<li>⑥ TRANSFER/PREFILTER PUMP → 淺黃色（設備）</li>
+<li>⑦ M/E SUMP → 淺黃色（設備）</li>
+<li>⑧ TRANSFER MAIN → 深黃色（滑油主線）</li>
+      </ul>
+      <p>以上依照你最新的顏色規範：深黃色＝滑油管路、淺黃色＝設備／槽櫃、橘色＝排放線。</p>
+    </section>
+    </main>
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | Designed for Maritime Training</div>
+  <script>
+    function toggleDetail(id){
+      const el=document.getElementById(id);
+      if(!el)return;
+      const all=document.querySelectorAll('#detailsSection details');
+      all.forEach(d=>{if(d!==el)d.removeAttribute('open');});
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  </script>
+</body>
+</html>

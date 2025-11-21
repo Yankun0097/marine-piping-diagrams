@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>G/E F.O. SERV. SYSTEM 互動詳解版</title>
+  <style>
+    :root{
+      --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b;
+      --red:#ff0000; --pink:#ff8fbf;
+      --deepyellow:#e6b800; --lightyellow:#fff8b0;
+      --black:#000000; --grey:#808080; --silver:#c0c0c0;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd;
+      --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif;
+    }
+    header{
+      position:sticky;top:0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      padding:16px 24px;
+      z-index:8;
+    }
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{
+      max-width:1080px;
+      margin:auto;
+      padding:24px;
+      display:grid;
+      grid-template-columns:340px 1fr;
+      gap:24px;
+    }
+    @media (max-width:960px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px 20px;
+      box-shadow:0 1px 2px rgba(15,23,42,.05);
+    }
+    .diagram{
+      width:100%;
+      border-radius:8px;
+      border:1px solid var(--border);
+      position:relative;
+    }
+    .hotspot{
+      position:absolute;
+      width:22px;height:22px;
+      border-radius:50%;
+      cursor:pointer;
+      opacity:0.35;
+      transition:all .2s ease-in-out;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hotspot:hover{
+      opacity:1;
+      transform:scale(1.2);
+    }
+    .tooltip{
+      position:absolute;
+      top:-28px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.8);
+      color:#fff;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:.8rem;
+      white-space:nowrap;
+      display:none;
+    }
+    .hotspot:hover .tooltip{display:block}
+    .legend{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px dashed var(--border);
+      border-radius:10px;
+      padding:8px;
+      background:#fff;
+    }
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .blue{background:var(--blue)}
+    .green{background:var(--green)}
+    .red{background:var(--red)}
+    .pink{background:var(--pink)}
+    .deepyellow{background:var(--deepyellow)}
+    .lightyellow{background:var(--lightyellow)}
+    .black{background:var(--black)}
+    .grey{background:var(--grey)}
+    .silver{background:var(--silver)}
+    .orange{background:var(--orange)}
+    .note{
+      border-left:4px solid var(--accent);
+      background:#eff6ff;
+      padding:10px 14px;
+      margin-top:8px;
+      border-radius:8px;
+    }
+    details{
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-top:10px;
+      padding:10px 14px;
+      background:#fff;
+    }
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{
+      position:fixed;
+      right:16px;bottom:16px;
+      background:#ffffff;
+      border:1px solid var(--border);
+      box-shadow:0 1px 3px rgba(0,0,0,.08);
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+    .brand{font-weight:600}
+    ul.hotspot-map{padding-left:1.1rem;margin:0.4rem 0 0;}
+    ul.hotspot-map li{margin:2px 0;font-size:0.9rem;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶管路系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">G/E 燃油供油系統｜G/E F.O. SERV. SYSTEM</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例（管路顏色）</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch blue"></span> 藍色：淡水管路</div>
+        <div class="chip"><span class="swatch green"></span> 綠色：海水管路</div>
+        <div class="chip"><span class="swatch red"></span> 紅色：燃油管路</div>
+        <div class="chip"><span class="swatch pink"></span> 粉紅色：柴油管路</div>
+        <div class="chip"><span class="swatch deepyellow"></span> 深黃色：滑油管路</div>
+        <div class="chip"><span class="swatch black"></span> 黑色：艙底水、衛生水管路</div>
+        <div class="chip"><span class="swatch grey"></span> 灰色：空氣管路</div>
+        <div class="chip"><span class="swatch silver"></span> 銀色：蒸汽、排氣管路</div>
+        <div class="chip"><span class="swatch orange"></span> 橙色：排放/放空線（Drain / Discharge）</div>
+        <div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與儀錶（Key Equipment &amp; Instruments）</div>
+      </div>
+
+      <h3 style="margin-top:18px;">①～⑩ 熱點顏色對照說明</h3>
+      <p style="margin:0 0 4px;font-size:0.9rem;">圓點顏色大致對應該設備所屬管路或功能類型：</p>
+      <ul class="hotspot-map">
+        <li><strong>① No.1 G/E 供油模組與增壓泵（NO.1 G/E F.O. SUPPLY & BOOSTER）</strong> — 粉紅色/紅色：第一台發電機的燃油供應鏈。</li>
+        <li><strong>② No.2 G/E 供油模組與增壓泵（NO.2 G/E F.O. SUPPLY & BOOSTER）</strong> — 粉紅色/紅色：第二台發電機的燃油供應鏈。</li>
+        <li><strong>③ No.3 G/E 供油模組與增壓泵（NO.3 G/E F.O. SUPPLY & BOOSTER）</strong> — 粉紅色/紅色：第三台發電機的燃油供應鏈。</li>
+        <li><strong>④ G/E F.O. 第二級濾器（G/E F.O. 2ND FILTER, AUTOMATIC BACKWASH）</strong> — 紅色：全系統共用之精密濾器。</li>
+        <li><strong>⑤ F.O. Return Oil Receiver（燃油回油回收槽）</strong> — 紅色：匯集各 G/E 回油，穩定回油壓力。</li>
+        <li><strong>⑥ 三座燃油服務櫃（HFO / LSFO / MGO SERV. TANKS）</strong> — 紅色/粉紅色：各等級燃油的儲存與切換來源。</li>
+        <li><strong>⑦ F.O. Heater（燃油加熱器）</strong> — 紅色 / 橙色：提升重油溫度以降低黏度。</li>
+        <li><strong>⑧ 至 G/E 供油總管（TO G/E F.O. SUPPLY MANIFOLD）</strong> — 紅色：將調壓後燃油送往各 G/E 的主幹線。</li>
+        <li><strong>⑨ Sludge Line（污油/污泥線）</strong> — 橙色：收集濾器、加熱器等設備排出的污油。</li>
+        <li><strong>⑩ 通往焚化爐與輔鍋爐的燃油支線（TO INCINERATOR / TO AUX. BLR）</strong> — 紅色/橙色：將燃油送往廢油焚化與輔鍋爐燃燒使用。</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（滑鼠移至圓點顯示名稱，點擊展開下方詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="GE F.O. SERV.SYSTEM.jpg" alt="G/E F.O. SERV. SYSTEM" />
+        <!-- ①～⑩ 熱點；座標以大致估計，可依實際需求微調 -->
+        <div class="hotspot" style="top:52%;left:23%;background:var(--pink);" onclick="toggleDetail('gefo_1')">
+          <div class="tooltip">① NO.1 G/E F.O. SUPPLY & BOOSTER</div>
+        </div>
+        <div class="hotspot" style="top:45%;left:23%;background:var(--pink);" onclick="toggleDetail('gefo_2')">
+          <div class="tooltip">② NO.2 G/E F.O. SUPPLY & BOOSTER</div>
+        </div>
+        <div class="hotspot" style="top:38%;left:23%;background:var(--pink);" onclick="toggleDetail('gefo_3')">
+          <div class="tooltip">③ NO.3 G/E F.O. SUPPLY & BOOSTER</div>
+        </div>
+        <div class="hotspot" style="top:74%;left:58%;background:var(--red);" onclick="toggleDetail('gefo_4')">
+          <div class="tooltip">④ G/E F.O. 2ND FILTER</div>
+        </div>
+        <div class="hotspot" style="top:26%;left:63%;background:var(--red);" onclick="toggleDetail('gefo_5')">
+          <div class="tooltip">⑤ F.O. RETURN OIL RECEIVER</div>
+        </div>
+        <div class="hotspot" style="top:15%;left:80%;background:var(--red);" onclick="toggleDetail('gefo_6')">
+          <div class="tooltip">⑥ HFO / LSFO / MGO SERV. TANKS</div>
+        </div>
+        <div class="hotspot" style="top:36%;left:80%;background:var(--red);" onclick="toggleDetail('gefo_7')">
+          <div class="tooltip">⑦ F.O. HEATER</div>
+        </div>
+        <div class="hotspot" style="top:57%;left:82%;background:var(--red);" onclick="toggleDetail('gefo_8')">
+          <div class="tooltip">⑧ TO G/E F.O. SUPPLY MANIFOLD</div>
+        </div>
+        <div class="hotspot" style="top:80%;left:18%;background:var(--orange);" onclick="toggleDetail('gefo_9')">
+          <div class="tooltip">⑨ SLUDGE LINE</div>
+        </div>
+        <div class="hotspot" style="top:64%;left:90%;background:var(--orange);" onclick="toggleDetail('gefo_10')">
+          <div class="tooltip">⑩ TO INCINERATOR / TO AUX. BLR</div>
+        </div>
+      </div>
+      <div class="note">
+        💡 圓點位置以百分比方式配置，如與圖上實際設備位置略有差異，可直接調整各熱點的
+        <code>top</code> / <code>left</code> 百分比進行微調。點擊圓點會自動捲動到下方對應的「系統關鍵部件與流程概述」段落。
+      </div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>系統關鍵部件與流程概述（對應 ①～⑩）</h2>
+
+      <details id="gefo_1">
+        <summary>① NO.1 G/E 供油模組與增壓泵（NO.1 G/E F.O. SUPPLY & BOOSTER）</summary>
+        <p>此區包含 No.1 發電機的燃油供油泵、旁通閥、壓力表及相關閥件。其功能是將服務油櫃來的燃油加壓後，穩定供應至 No.1 G/E 噴油泵，並確保起動與負荷變動時仍有足夠壓力與流量。</p>
+      </details>
+
+      <details id="gefo_2">
+        <summary>② NO.2 G/E 供油模組與增壓泵（NO.2 G/E F.O. SUPPLY & BOOSTER）</summary>
+        <p>No.2 G/E 的供油模組結構與 No.1 類似，通常平時一用一備或視負荷需求同時運轉。設計上每套模組可獨立隔離，方便單機檢修而不影響其他發電機供油。</p>
+      </details>
+
+      <details id="gefo_3">
+        <summary>③ NO.3 G/E 供油模組與增壓泵（NO.3 G/E F.O. SUPPLY & BOOSTER）</summary>
+        <p>第三台發電機的燃油供油系統。三套模組構成冗餘配置，可依航行狀態選擇運轉組合。理解其中一套的流向，即可類推另外兩套，有助於教學與故障排除。</p>
+      </details>
+
+      <details id="gefo_4">
+        <summary>④ G/E F.O. 第二級濾器（G/E F.O. 2ND FILTER, AUTOMATIC BACKWASH）</summary>
+        <p>此濾器位於三套 G/E 供油模組之前，屬於共用之精密過濾設備。自動反沖洗機構可在壓差增大時啟動，將附著的雜質沖回污油線，維持濾芯清潔，減少人工拆洗頻率。</p>
+      </details>
+
+      <details id="gefo_5">
+        <summary>⑤ F.O. Return Oil Receiver（燃油回油回收槽）</summary>
+        <p>發電機未燃盡或泄漏回來的燃油，透過回油管匯集於此槽。回油槽可穩定回油壓力，避免直接回到服務油櫃造成液位波動，同時利於監看回油量與溫度變化。</p>
+      </details>
+
+      <details id="gefo_6">
+        <summary>⑥ 三座燃油服務櫃（HFO / LSFO / MGO SERV. TANKS）</summary>
+        <p>這三座服務油櫃分別存放不同等級的燃油，例如 HFO（重油）、LSFO（低硫重油）、MGO（船用輕油）。透過閥件切換，可依航行區域與排放規範選擇適當油品供給 G/E。</p>
+      </details>
+
+      <details id="gefo_7">
+        <summary>⑦ F.O. Heater（燃油加熱器）</summary>
+        <p>對於黏度較高的重油，必須在進入噴油泵前預先加熱，降低黏度以利霧化。加熱器多採蒸汽或熱油作為熱源，其出口溫度設定需兼顧燃燒效率與油品穩定性。</p>
+      </details>
+
+      <details id="gefo_8">
+        <summary>⑧ 至 G/E 供油總管（TO G/E F.O. SUPPLY MANIFOLD）</summary>
+        <p>經過加熱、過濾與調壓後的燃油，匯集至供油總管，再分配至各 G/E 供油模組入口。此總管壓力通常維持在一定範圍內，異常時會觸發警報或保護動作。</p>
+      </details>
+
+      <details id="gefo_9">
+        <summary>⑨ Sludge Line（污油/污泥線）</summary>
+        <p>濾器、加熱器及其他設備排出的含雜質燃油，會集中到污油/污泥管線，最終送至污油槽或焚化爐。適當管理這條管路，可避免未處理油泥回流到乾淨油路。</p>
+      </details>
+
+      <details id="gefo_10">
+        <summary>⑩ 通往焚化爐與輔鍋爐的燃油支線（TO INCINERATOR / TO AUX. BLR）</summary>
+        <p>部分燃油或污油可送往廢油焚化爐或輔鍋爐燃燒，達到能源回收與廢棄物減量的目的。這些支線上的閥位與流向切換，需依操作程序嚴格執行，以免誤將重油送入不適合的設備。</p>
+      </details>
+
+    </section>
+  </main>
+
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | G/E F.O. SERV. SYSTEM</div>
+
+  <script>
+    function toggleDetail(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      const all = document.querySelectorAll('#detailsSection details');
+      all.forEach(d => { if (d !== el) d.removeAttribute('open'); });
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  </script>
+</body>
+</html>

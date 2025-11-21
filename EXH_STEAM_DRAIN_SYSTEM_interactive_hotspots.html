@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EXH. STEAM & DRAIN SYSTEM 互動詳解版</title>
+  <style>
+    :root{
+      --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b;
+      --red:#ff0000; --pink:#ff8fbf;
+      --deepyellow:#e6b800; --lightyellow:#fff8b0;
+      --black:#000000; --grey:#808080; --silver:#c0c0c0;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd;
+      --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif;
+    }
+    header{
+      position:sticky;top:0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      padding:16px 24px;
+      z-index:8;
+    }
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{
+      max-width:1080px;
+      margin:auto;
+      padding:24px;
+      display:grid;
+      grid-template-columns:340px 1fr;
+      gap:24px;
+    }
+    @media (max-width:960px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px 20px;
+      box-shadow:0 1px 2px rgba(15,23,42,.05);
+    }
+    .diagram{
+      width:100%;
+      border-radius:8px;
+      border:1px solid var(--border);
+      position:relative;
+    }
+    .hotspot{
+      position:absolute;
+      width:22px;height:22px;
+      border-radius:50%;
+      cursor:pointer;
+      opacity:0.35;
+      transition:all .2s ease-in-out;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hotspot:hover{
+      opacity:1;
+      transform:scale(1.2);
+    }
+    .tooltip{
+      position:absolute;
+      top:-28px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.8);
+      color:#fff;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:.8rem;
+      white-space:nowrap;
+      display:none;
+    }
+    .hotspot:hover .tooltip{display:block}
+    .legend{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px dashed var(--border);
+      border-radius:10px;
+      padding:8px;
+      background:#fff;
+    }
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .blue{background:var(--blue)}
+    .green{background:var(--green)}
+    .red{background:var(--red)}
+    .pink{background:var(--pink)}
+    .deepyellow{background:var(--deepyellow)}
+    .lightyellow{background:var(--lightyellow)}
+    .black{background:var(--black)}
+    .grey{background:var(--grey)}
+    .silver{background:var(--silver)}
+    .orange{background:var(--orange)}
+    .note{
+      border-left:4px solid var(--accent);
+      background:#eff6ff;
+      padding:10px 14px;
+      margin-top:8px;
+      border-radius:8px;
+    }
+    details{
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-top:10px;
+      padding:10px 14px;
+      background:#fff;
+    }
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{
+      position:fixed;
+      right:16px;bottom:16px;
+      background:#ffffff;
+      border:1px solid var(--border);
+      box-shadow:0 1px 3px rgba(0,0,0,.08);
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+    .brand{font-weight:600}
+    ul.hotspot-map{padding-left:1.1rem;margin:0.4rem 0 0;}
+    ul.hotspot-map li{margin:2px 0;font-size:0.9rem;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶管路系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">排氣、蒸汽與放水系統｜EXH. STEAM &amp; DRAIN SYSTEM</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例（管路顏色）</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch blue"></span> 藍色：淡水管路</div>
+        <div class="chip"><span class="swatch green"></span> 綠色：海水管路</div>
+        <div class="chip"><span class="swatch red"></span> 紅色：燃油管路</div>
+        <div class="chip"><span class="swatch pink"></span> 粉紅色：柴油管路</div>
+        <div class="chip"><span class="swatch deepyellow"></span> 深黃色：滑油管路</div>
+        <div class="chip"><span class="swatch black"></span> 黑色：艙底水、衛生水管路</div>
+        <div class="chip"><span class="swatch grey"></span> 灰色：空氣管路</div>
+        <div class="chip"><span class="swatch silver"></span> 銀色：蒸汽、排氣管路</div>
+        <div class="chip"><span class="swatch orange"></span> 橙色：排放/放水線（Drain / Discharge）</div>
+        <div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與儀錶（Key Equipment &amp; Instruments）</div>
+      </div>
+
+      <h3 style="margin-top:18px;">①～⑩ 熱點顏色對照說明</h3>
+      <p style="margin:0 0 4px;font-size:0.9rem;">圓點顏色大致對應該設備所屬管路或功能類型：</p>
+      <ul class="hotspot-map">
+        <li><strong>① ATMOS. COND'R &amp; AUX. BOILER DRAIN（排氣冷凝器與輔鍋爐放水區）</strong> — 銀色/橙色：處理鍋爐與排氣冷凝產生的凝結水與放水。</li>
+        <li><strong>② CASCADE TK（級聯冷凝水槽）</strong> — 藍色：收集凝結水，最終回到鍋爐或補充淡水系統。</li>
+        <li><strong>③ BILGE PRIM. TK &amp; G/E L.O. SETTL. TK DRAIN（艙底初集油櫃與滑油沉澱櫃放水）</strong> — 橙色/深黃色：收集滑油與艙底水的混合排放。</li>
+        <li><strong>④ WASTE OIL SETT. TKS（廢油沉澱櫃）</strong> — 深黃色：集中各系統來的廢油，利用沉降分離。</li>
+        <li><strong>⑤ SLUDGE TK（油泥槽）</strong> — 深黃色/橙色：存放淨油機與沉澱櫃產生的油泥，準備送焚化或上岸處理。</li>
+        <li><strong>⑥ F.O. / L.O. SERV. &amp; SETTL. TKS DRAIN MANIFOLD（燃油與滑油服務/沉澱櫃放水匯集總管）</strong> — 橙色：集中低硫重油、重油、滑油等油櫃的放水與排放。</li>
+        <li><strong>⑦ M/E F.W. PRE-HEATER &amp; DRAIN POT（主機淡水預熱器與放水壺）</strong> — 銀色/橙色：處理預熱器產生的凝結水與排氣冷凝液。</li>
+        <li><strong>⑧ HEATER DRAIN HEADER（各種 F.O. / L.O. 加熱器放水總管）</strong> — 銀色/橙色：包含 SHIFTER F.O. HTR、NO.1/NO.2 PURIF F.O. HTR、M/E 與 G/E PURIF L.O. HTR、F.O. HTR 等加熱器的蒸汽凝結水。</li>
+        <li><strong>⑨ BILGE SEPARATOR（含油污水分離器）</strong> — 綠色/橙色：將艙底水中的油分離後排放或回收。</li>
+        <li><strong>⑩ OVERFLOW &amp; F.O. CLEAN DRAIN COMP'T（溢流水與清潔燃油排放艙）</strong> — 橙色：集中油櫃溢流與較乾淨的燃油排放，避免直接入艙底。</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（滑鼠移至圓點顯示名稱，點擊展開下方詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="EXH.STEAM &amp; DRAIN SYSTEM.jpg" alt="EXH. STEAM &amp; DRAIN SYSTEM" />
+        <!-- ①～⑩ 熱點；座標為估計值，可依實際需求微調 -->
+        <div class="hotspot" style="top:63%;left:18%;background:var(--silver);" onclick="toggleDetail('exsd_1')">
+          <div class="tooltip">① ATMOS. COND'R & AUX. BOILER DRAIN</div>
+        </div>
+        <div class="hotspot" style="top:78%;left:18%;background:var(--blue);" onclick="toggleDetail('exsd_2')">
+          <div class="tooltip">② CASCADE TK</div>
+        </div>
+        <div class="hotspot" style="top:55%;left:27%;background:var(--orange);" onclick="toggleDetail('exsd_3')">
+          <div class="tooltip">③ BILGE PRIM. TK & G/E L.O. SETTL. TK DRAIN</div>
+        </div>
+        <div class="hotspot" style="top:78%;left:40%;background:var(--deepyellow);" onclick="toggleDetail('exsd_4')">
+          <div class="tooltip">④ WASTE OIL SETT. TKS</div>
+        </div>
+        <div class="hotspot" style="top:60%;left:52%;background:var(--deepyellow);" onclick="toggleDetail('exsd_5')">
+          <div class="tooltip">⑤ SLUDGE TK</div>
+        </div>
+        <div class="hotspot" style="top:52%;left:58%;background:var(--orange);" onclick="toggleDetail('exsd_6')">
+          <div class="tooltip">⑥ F.O./L.O. SERV & SETTL. TKS DRAIN MANIFOLD</div>
+        </div>
+        <div class="hotspot" style="top:50%;left:70%;background:var(--silver);" onclick="toggleDetail('exsd_7')">
+          <div class="tooltip">⑦ M/E F.W. PRE-HEATER & DRAIN POT</div>
+        </div>
+        <div class="hotspot" style="top:45%;left:83%;background:var(--silver);" onclick="toggleDetail('exsd_8')">
+          <div class="tooltip">⑧ HEATER DRAIN HEADER</div>
+        </div>
+        <div class="hotspot" style="top:14%;left:56%;background:var(--green);" onclick="toggleDetail('exsd_9')">
+          <div class="tooltip">⑨ BILGE SEPARATOR</div>
+        </div>
+        <div class="hotspot" style="top:10%;left:88%;background:var(--orange);" onclick="toggleDetail('exsd_10')">
+          <div class="tooltip">⑩ OVERFLOW & F.O. CLEAN DRAIN COMP'T</div>
+        </div>
+      </div>
+      <div class="note">
+        💡 圓點位置以百分比方式配置，如與圖上實際設備位置略有差異，可直接調整各熱點的
+        <code>top</code> / <code>left</code> 百分比進行微調。點擊圓點會自動捲動到下方對應的「系統關鍵部件與流程概述」段落。
+      </div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>系統關鍵部件與流程概述（對應 ①～⑩）</h2>
+
+      <details id="exsd_1">
+        <summary>① ATMOS. COND'R &amp; AUX. BOILER DRAIN（排氣冷凝器與輔鍋爐放水區）</summary>
+        <p>此區包含排氣冷凝器（ATMOS. COND'R）與輔鍋爐的蒸汽/排氣冷凝水、鍋爐放水等。經由藍色/橙色管路將凝結水收集後導向級聯水槽或艙底，避免直接排出造成能量與水資源浪費。</p>
+      </details>
+
+      <details id="exsd_2">
+        <summary>② CASCADE TK（級聯冷凝水槽）</summary>
+        <p>CASCADE TK 主要儲存從排氣冷凝器、鍋爐及其他換熱設備回收的凝結水。經過簡單處理後，可再送回鍋爐或作為淡水補給，減少新鮮淡水消耗，提升整體熱效率。</p>
+      </details>
+
+      <details id="exsd_3">
+        <summary>③ BILGE PRIM. TK &amp; G/E L.O. SETTL. TK DRAIN（艙底初集油櫃與滑油沉澱櫃放水）</summary>
+        <p>艙底初集油櫃（BILGE PRIM. TK）及 G/E 滑油沉澱櫃的放水/含油水會匯入本區，之後再送往含油污水分離器或污油系統處理。適當管理此處排放，可避免油污直接進入艙底或外排。</p>
+      </details>
+
+      <details id="exsd_4">
+        <summary>④ WASTE OIL SETT. TKS（廢油沉澱櫃）</summary>
+        <p>NO.1、NO.2 WASTE OIL SETT. TKS 用來收集各系統產生的廢油（如濾器、換熱器放出的含油液體）。透過靜置沉澱，部分水分會沉到底部排出，上層較濃稠的油泥再送往油泥槽或焚化處理。</p>
+      </details>
+
+      <details id="exsd_5">
+        <summary>⑤ SLUDGE TK（油泥槽）</summary>
+        <p>油泥槽集中存放淨油機、沉澱櫃及各種排放管路所來的油泥與高含固體的廢油。此槽通常配置加熱與攪拌，以利後續泵送至焚化爐或上岸處置。</p>
+      </details>
+
+      <details id="exsd_6">
+        <summary>⑥ F.O. / L.O. SERV. &amp; SETTL. TKS DRAIN MANIFOLD（燃油與滑油服務/沉澱櫃放水匯集總管）</summary>
+        <p>中央的大型匯流排負責收集低硫重油、重油及滑油服務／沉澱櫃的放水與底部排放。各油櫃底部的 Drain Valve 通往此總管，再由操作者選擇導入廢油沉澱櫃、油泥槽或艙底水系統。</p>
+      </details>
+
+      <details id="exsd_7">
+        <summary>⑦ M/E F.W. PRE-HEATER &amp; DRAIN POT（主機淡水預熱器與放水壺）</summary>
+        <p>主機淡水預熱器利用蒸汽或高溫水提升冷卻淡水溫度，以改善主機熱效率。其產生的凝結水及排氣冷凝液會收集於 Drain Pot，再經橙色管路送往級聯水槽或相關放水系統。</p>
+      </details>
+
+      <details id="exsd_8">
+        <summary>⑧ HEATER DRAIN HEADER（各種 F.O. / L.O. 加熱器放水總管）</summary>
+        <p>右側縱向排列的 SHIFTER F.O. HTR、NO.1/NO.2 PURIF F.O. HTR、M/E &amp; G/E PURIF L.O. HTR、F.O. HTR 等加熱器，其蒸汽凝結水與放水透過此總管匯集，再導入級聯水槽或艙底。此區是整個「加熱系統放水」的核心節點。</p>
+      </details>
+
+      <details id="exsd_9">
+        <summary>⑨ BILGE SEPARATOR（含油污水分離器）</summary>
+        <p>含油污水分離器負責處理艙底水與含油排放，將油分與水分分離後，合格的清水方可排出船外，油分則回收至污油系統。其進出口與旁通管線在圖面上以綠色與橙色顯示，是符合 MARPOL 規範的重要設備。</p>
+      </details>
+
+      <details id="exsd_10">
+        <summary>⑩ OVERFLOW &amp; F.O. CLEAN DRAIN COMP'T（溢流水與清潔燃油排放艙）</summary>
+        <p>當燃油或滑油油櫃液位過高時，溢流管會將油導向 Overflow / F.O. CLEAN DRAIN Compartment，避免直接流入艙底造成污染。此艙也收集相對乾淨的燃油排放，日後可再由轉送泵抽回利用。</p>
+      </details>
+
+    </section>
+  </main>
+
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | EXH. STEAM &amp; DRAIN SYSTEM</div>
+
+  <script>
+    function toggleDetail(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      const all = document.querySelectorAll('#detailsSection details');
+      all.forEach(d => { if (d !== el) d.removeAttribute('open'); });
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  </script>
+</body>
+</html>

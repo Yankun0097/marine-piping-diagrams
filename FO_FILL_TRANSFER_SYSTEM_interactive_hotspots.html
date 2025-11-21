@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>F.O. FILL & TRANSFER SYSTEM 互動詳解版</title>
+  <style>
+    :root{
+      --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b;
+      --red:#ff0000; --pink:#ff8fbf;
+      --deepyellow:#e6b800; --lightyellow:#fff8b0;
+      --black:#000000; --grey:#808080; --silver:#c0c0c0;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd;
+      --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif;
+    }
+    header{
+      position:sticky;top:0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      padding:16px 24px;
+      z-index:8;
+    }
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{
+      max-width:1080px;
+      margin:auto;
+      padding:24px;
+      display:grid;
+      grid-template-columns:340px 1fr;
+      gap:24px;
+    }
+    @media (max-width:960px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px 20px;
+      box-shadow:0 1px 2px rgba(15,23,42,.05);
+    }
+    .diagram{
+      width:100%;
+      border-radius:8px;
+      border:1px solid var(--border);
+      position:relative;
+    }
+    .hotspot{
+      position:absolute;
+      width:22px;height:22px;
+      border-radius:50%;
+      cursor:pointer;
+      opacity:0.35;
+      transition:all .2s ease-in-out;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hotspot:hover{
+      opacity:1;
+      transform:scale(1.2);
+    }
+    .tooltip{
+      position:absolute;
+      top:-28px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.8);
+      color:#fff;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:.8rem;
+      white-space:nowrap;
+      display:none;
+    }
+    .hotspot:hover .tooltip{display:block}
+    .legend{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px dashed var(--border);
+      border-radius:10px;
+      padding:8px;
+      background:#fff;
+    }
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .blue{background:var(--blue)}
+    .green{background:var(--green)}
+    .red{background:var(--red)}
+    .pink{background:var(--pink)}
+    .deepyellow{background:var(--deepyellow)}
+    .lightyellow{background:var(--lightyellow)}
+    .black{background:var(--black)}
+    .grey{background:var(--grey)}
+    .silver{background:var(--silver)}
+    .orange{background:var(--orange)}
+    .note{
+      border-left:4px solid var(--accent);
+      background:#eff6ff;
+      padding:10px 14px;
+      margin-top:8px;
+      border-radius:8px;
+    }
+    details{
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-top:10px;
+      padding:10px 14px;
+      background:#fff;
+    }
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{
+      position:fixed;
+      right:16px;bottom:16px;
+      background:#ffffff;
+      border:1px solid var(--border);
+      box-shadow:0 1px 3px rgba(0,0,0,.08);
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+    .brand{font-weight:600}
+    ul.hotspot-map{padding-left:1.1rem;margin:0.4rem 0 0;}
+    ul.hotspot-map li{margin:2px 0;font-size:0.9rem;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶管路系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">燃油加注與轉送系統｜F.O. FILL &amp; TRANSFER SYSTEM</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例（管路顏色）</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch blue"></span> 藍色：淡水管路</div>
+        <div class="chip"><span class="swatch green"></span> 綠色：海水管路</div>
+        <div class="chip"><span class="swatch red"></span> 紅色：燃油管路</div>
+        <div class="chip"><span class="swatch pink"></span> 粉紅色：柴油管路</div>
+        <div class="chip"><span class="swatch deepyellow"></span> 深黃色：滑油管路</div>
+        <div class="chip"><span class="swatch black"></span> 黑色：艙底水、衛生水管路</div>
+        <div class="chip"><span class="swatch grey"></span> 灰色：空氣管路</div>
+        <div class="chip"><span class="swatch silver"></span> 銀色：蒸汽、排氣管路</div>
+        <div class="chip"><span class="swatch orange"></span> 橙色：排放/放空線（Drain / Discharge）</div>
+        <div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與儀錶（Key Equipment &amp; Instruments）</div>
+      </div>
+
+      <h3 style="margin-top:18px;">①～⑩ 熱點顏色對照說明</h3>
+      <p style="margin:0 0 4px;font-size:0.9rem;">圓點顏色大致對應該設備所屬管路或功能類型：</p>
+      <ul class="hotspot-map">
+        <li><strong>① Bunker/Filling Manifold（岸上加注接收總管）</strong> — 紅色：船岸連接點，整個系統的油料入口。</li>
+        <li><strong>② D.O. Service Tank（輕油服務油櫃）</strong> — 紅色/粉紅色：發電機或鍋爐用輕油的主要來源。</li>
+        <li><strong>③ H.F.O. Service Tanks（重油服務油櫃）</strong> — 紅色：供主機與發電機燃燒的重油來源。</li>
+        <li><strong>④ H.F.O. Settling Tanks（重油沉澱櫃）</strong> — 紅色：讓重油藉由時間與重力先行沉降水分與雜質。</li>
+        <li><strong>⑤ F.O. Transfer Pump（燃油轉送泵）</strong> — 紅色：將各油櫃中的燃油轉送至其他油櫃或服務櫃。</li>
+        <li><strong>⑥ D.O. Transfer Pump（柴油轉送泵）</strong> — 粉紅色：專責輕油在各油櫃間的轉移與補給。</li>
+        <li><strong>⑦ F.O. Shifter Pump（燃油切換/移送泵）</strong> — 紅色：在不同燃油系統之間切換或移送油品。</li>
+        <li><strong>⑧ Shift F.O. Heater（燃油切換加熱器）</strong> — 紅色/橙色：加熱重油以利轉送與後續燃燒。</li>
+        <li><strong>⑨ F.O. Clean Drain &amp; Overflow Tank（燃油清潔排放與溢流槽）</strong> — 橙色：收集設備排放及油櫃溢流燃油。</li>
+        <li><strong>⑩ Lines to No.1/No.2/No.3 F.O. Tanks（通往各主燃油艙之管路）</strong> — 紅色：將加注或轉送之燃油分配至各主燃油艙。</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（滑鼠移至圓點顯示名稱，點擊展開下方詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="F.O. FILL. &amp; TRANSFER SYSTEM.jpg" alt="F.O. FILL &amp; TRANSFER SYSTEM" />
+        <!-- ①～⑩ 熱點；座標為估計值，可依實際需求微調 -->
+        <div class="hotspot" style="top:8%;left:8%;background:var(--red);" onclick="toggleDetail('foft_1')">
+          <div class="tooltip">① Bunker / Filling Manifold</div>
+        </div>
+        <div class="hotspot" style="top:20%;left:12%;background:var(--red);" onclick="toggleDetail('foft_2')">
+          <div class="tooltip">② D.O. Service Tank</div>
+        </div>
+        <div class="hotspot" style="top:18%;left:40%;background:var(--red);" onclick="toggleDetail('foft_3')">
+          <div class="tooltip">③ H.F.O. Service Tanks</div>
+        </div>
+        <div class="hotspot" style="top:26%;left:40%;background:var(--red);" onclick="toggleDetail('foft_4')">
+          <div class="tooltip">④ H.F.O. Settling Tanks</div>
+        </div>
+        <div class="hotspot" style="top:55%;left:45%;background:var(--red);" onclick="toggleDetail('foft_5')">
+          <div class="tooltip">⑤ F.O. Transfer Pump</div>
+        </div>
+        <div class="hotspot" style="top:45%;left:45%;background:var(--pink);" onclick="toggleDetail('foft_6')">
+          <div class="tooltip">⑥ D.O. Transfer Pump</div>
+        </div>
+        <div class="hotspot" style="top:40%;left:20%;background:var(--red);" onclick="toggleDetail('foft_7')">
+          <div class="tooltip">⑦ F.O. Shifter Pump</div>
+        </div>
+        <div class="hotspot" style="top:42%;left:16%;background:var(--red);" onclick="toggleDetail('foft_8')">
+          <div class="tooltip">⑧ Shift F.O. Heater</div>
+        </div>
+        <div class="hotspot" style="top:78%;left:50%;background:var(--orange);" onclick="toggleDetail('foft_9')">
+          <div class="tooltip">⑨ F.O. Clean Drain &amp; Overflow Tank</div>
+        </div>
+        <div class="hotspot" style="top:15%;left:78%;background:var(--red);" onclick="toggleDetail('foft_10')">
+          <div class="tooltip">⑩ Lines to No.1 / No.2 / No.3 F.O. Tanks</div>
+        </div>
+      </div>
+      <div class="note">
+        💡 圓點位置以百分比方式配置，如與圖上實際設備位置略有差異，可直接調整各熱點的
+        <code>top</code> / <code>left</code> 百分比進行微調。點擊圓點會自動捲動到下方對應的「系統關鍵部件與流程概述」段落。
+      </div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>系統關鍵部件與流程概述（對應 ①～⑩）</h2>
+
+      <details id="foft_1">
+        <summary>① Bunker/Filling Manifold（岸上加注接收總管）</summary>
+        <p>船舶在港口補給燃油時，岸上加注臂或加油軟管會接至此總管。加注流量與壓力需與岸方協調，並透過此處之閥件控制進入哪些油艙，以避免超裝或誤注錯艙。</p>
+      </details>
+
+      <details id="foft_2">
+        <summary>② D.O. Service Tank（輕油服務油櫃）</summary>
+        <p>輕油服務油櫃儲存乾淨的柴油，多作為主機、發電機或鍋爐在特殊運轉狀態（例如低硫區或起動時）之燃油來源。油面高度與溫度通常受監控，以確保隨時可供切換。</p>
+      </details>
+
+      <details id="foft_3">
+        <summary>③ H.F.O. Service Tanks（重油服務油櫃）</summary>
+        <p>重油服務油櫃為主機與發電機長期運轉時的主要燃油來源。油櫃通常設有加熱線圈，以維持重油適當溫度，便於後續加熱與霧化。由加注或轉送線補油後，再由供油系統抽取。</p>
+      </details>
+
+      <details id="foft_4">
+        <summary>④ H.F.O. Settling Tanks（重油沉澱櫃）</summary>
+        <p>沉澱櫃提供重油靜置時間，讓水分與較重雜質沉降到底部。上層較乾淨的油再送往服務油櫃或淨油機。底部污油則定期排放至污油系統，以降低對下游設備的負擔。</p>
+      </details>
+
+      <details id="foft_5">
+        <summary>⑤ F.O. Transfer Pump（燃油轉送泵）</summary>
+        <p>燃油轉送泵負責在各重油艙與服務/沉澱櫃之間移送重油，包括從底艙抽油、補給服務櫃、或將油品移艙。操作時必須注意所連通之閥位，以免錯流或造成油櫃溢流。</p>
+      </details>
+
+      <details id="foft_6">
+        <summary>⑥ D.O. Transfer Pump（柴油轉送泵）</summary>
+        <p>柴油轉送泵專責輕油的移送工作，將輕油自存油艙抽至服務油櫃，或在不同油艙之間調整壓載與重量分布。相比重油系統，其管路多以較細的粉紅色管線表示。</p>
+      </details>
+
+      <details id="foft_7">
+        <summary>⑦ F.O. Shifter Pump（燃油切換/移送泵）</summary>
+        <p>當船舶需要在輕油與重油之間切換，或在不同重油來源（例如 HFO 與 LSFO）之間切換時，F.O. Shifter Pump 便扮演關鍵角色。其管路設計允許在多個油櫃間自由切換流向。</p>
+      </details>
+
+      <details id="foft_8">
+        <summary>⑧ Shift F.O. Heater（燃油切換加熱器）</summary>
+        <p>為避免切換油品時因黏度差異過大造成燃燒不良，Shift F.O. Heater 會先將進入供油系統的重油加熱至合適溫度，使從輕油切換至重油的過程更加平順。</p>
+      </details>
+
+      <details id="foft_9">
+        <summary>⑨ F.O. Clean Drain &amp; Overflow Tank（燃油清潔排放與溢流槽）</summary>
+        <p>各種設備（如濾器、加熱器、管路排氣）排出的相對乾淨燃油，以及服務油櫃溢流的燃油，會匯集到此槽。輪機員可視情況再將其抽回主系統利用，以減少油料浪費。</p>
+      </details>
+
+      <details id="foft_10">
+        <summary>⑩ Lines to No.1/No.2/No.3 F.O. Tanks（通往各主燃油艙之管路）</summary>
+        <p>經由加注或船內轉送後的燃油，最終需分配到各主燃油艙（如 No.1、No.2、No.3 F.O. Tanks）。圖上頂部與右側的紅色管路與閥件即為分配與切換的關鍵區域，操作時必須依照油艙裝載計畫逐一確認閥位。</p>
+      </details>
+
+    </section>
+  </main>
+
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | F.O. FILL &amp; TRANSFER SYSTEM</div>
+
+  <script>
+    function toggleDetail(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      const all = document.querySelectorAll('#detailsSection details');
+      all.forEach(d => { if (d !== el) d.removeAttribute('open'); });
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L.O. TRANS & PURIF. SYSTEM 互動詳解版</title>
+  <style>
+    :root{
+      --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b;
+      --red:#ff0000; --pink:#ff8fbf;
+      --deepyellow:#e6b800; --lightyellow:#fff8b0;
+      --black:#000000; --grey:#808080; --silver:#c0c0c0;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd;
+      --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif;
+    }
+    header{
+      position:sticky;top:0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      padding:16px 24px;
+      z-index:8;
+    }
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{
+      max-width:1080px;
+      margin:auto;
+      padding:24px;
+      display:grid;
+      grid-template-columns:340px 1fr;
+      gap:24px;
+    }
+    @media (max-width:960px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px 20px;
+      box-shadow:0 1px 2px rgba(15,23,42,.05);
+    }
+    .diagram{
+      width:100%;
+      border-radius:8px;
+      border:1px solid var(--border);
+      position:relative;
+    }
+    .hotspot{
+      position:absolute;
+      width:22px;height:22px;
+      border-radius:50%;
+      cursor:pointer;
+      opacity:0.35;
+      transition:all .2s ease-in-out;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hotspot:hover{
+      opacity:1;
+      transform:scale(1.2);
+    }
+    .tooltip{
+      position:absolute;
+      top:-28px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.8);
+      color:#fff;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:.8rem;
+      white-space:nowrap;
+      display:none;
+    }
+    .hotspot:hover .tooltip{display:block}
+    .legend{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px dashed var(--border);
+      border-radius:10px;
+      padding:8px;
+      background:#fff;
+    }
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .blue{background:var(--blue)}
+    .green{background:var(--green)}
+    .red{background:var(--red)}
+    .pink{background:var(--pink)}
+    .deepyellow{background:var(--deepyellow)}
+    .lightyellow{background:var(--lightyellow)}
+    .black{background:var(--black)}
+    .grey{background:var(--grey)}
+    .silver{background:var(--silver)}
+    .orange{background:var(--orange)}
+    .note{
+      border-left:4px solid var(--accent);
+      background:#eff6ff;
+      padding:10px 14px;
+      margin-top:8px;
+      border-radius:8px;
+    }
+    details{
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-top:10px;
+      padding:10px 14px;
+      background:#fff;
+    }
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{
+      position:fixed;
+      right:16px;bottom:16px;
+      background:#ffffff;
+      border:1px solid var(--border);
+      box-shadow:0 1px 3px rgba(0,0,0,.08);
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+    .brand{font-weight:600}
+    ul.hotspot-map{padding-left:1.1rem;margin:0.4rem 0 0;}
+    ul.hotspot-map li{margin:2px 0;font-size:0.9rem;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶管路系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">潤滑油轉送與淨油系統｜L.O. TRANS & PURIF. SYSTEM</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例（管路顏色）</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch blue"></span> 藍色：淡水管路</div>
+        <div class="chip"><span class="swatch green"></span> 綠色：海水管路</div>
+        <div class="chip"><span class="swatch red"></span> 紅色：燃油管路</div>
+        <div class="chip"><span class="swatch pink"></span> 粉紅色：柴油管路</div>
+        <div class="chip"><span class="swatch deepyellow"></span> 深黃色：滑油管路</div>
+        <div class="chip"><span class="swatch black"></span> 黑色：艙底水、衛生水管路</div>
+        <div class="chip"><span class="swatch grey"></span> 灰色：空氣管路</div>
+        <div class="chip"><span class="swatch silver"></span> 銀色：蒸汽、排氣管路</div>
+        <div class="chip"><span class="swatch orange"></span> 橙色：排放/放空線（Drain / Discharge）</div>
+        <div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與儀錶（Key Equipment &amp; Instruments）</div>
+      </div>
+
+      <h3 style="margin-top:18px;">①～⑩ 熱點顏色對照說明</h3>
+      <p style="margin:0 0 4px;font-size:0.9rem;">圓點顏色大致對應該設備所屬管路或功能類型：</p>
+      <ul class="hotspot-map">
+        <li><strong>① G/E 滑油匯集與迴流區（No.1–3 G/E L.O. Sumps & Overflow）</strong> — 深黃色：發電機滑油回收與溢流管理。</li>
+        <li><strong>② G/E L.O. 沉澱櫃（G/E L.O. SETTL. TK）</strong> — 深黃色：利用靜置沉澱去除水分與雜質。</li>
+        <li><strong>③ G/E L.O. 儲油櫃（G/E L.O. STOR. TK）</strong> — 深黃色：存放已淨化或待供應之發電機滑油。</li>
+        <li><strong>④ G/E 滑油淨油機（G/E L.O. PURIFIER）</strong> — 深黃色：離心分離發電機滑油中的水與雜質。</li>
+        <li><strong>⑤ M/E 滑油油槽（M/E L.O. SUMP TK）</strong> — 深黃色：主機回流滑油之集油槽。</li>
+        <li><strong>⑥ 滑油轉送暨主機淨油供油泵（L.O. TRANS & M/E PURIF. L.O. FEED PUMP）</strong> — 深黃色：將滑油送往主機淨油機與各儲櫃。</li>
+        <li><strong>⑦ M/E 滑油淨油機（M/E L.O. PURIFIER）</strong> — 深黃色：離心淨化主機滑油。</li>
+        <li><strong>⑧ 主機滑油淨油加熱器（M/E PURIF. L.O. HTR）</strong> — 深黃色 / 橙色：加熱滑油以提升分離效率。</li>
+        <li><strong>⑨ M/E 滑油沉澱櫃（M/E L.O. SETTL. TK）</strong> — 深黃色：讓滑油在靜置中自然沉澱分層。</li>
+        <li><strong>⑩ 污油槽與汙泥線（SLUDGE TK & SLUDGE LINE）</strong> — 橙色：收集淨油機排出的污油與汙泥。</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（滑鼠移至圓點顯示名稱，點擊展開下方詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="L.O.TRANS&PURIF. SYSTEM.jpg" alt="L.O. TRANS & PURIF. SYSTEM" />
+        <!-- ①～⑩ 熱點；座標為大致估計，可依實際需求微調 -->
+        <div class="hotspot" style="top:55%;left:19%;background:var(--deepyellow);" onclick="toggleDetail('lo_1')">
+          <div class="tooltip">① G/E 滑油匯集與迴流區</div>
+        </div>
+        <div class="hotspot" style="top:18%;left:43%;background:var(--deepyellow);" onclick="toggleDetail('lo_2')">
+          <div class="tooltip">② G/E L.O. 沉澱櫃（SETTL. TK）</div>
+        </div>
+        <div class="hotspot" style="top:18%;left:50%;background:var(--deepyellow);" onclick="toggleDetail('lo_3')">
+          <div class="tooltip">③ G/E L.O. 儲油櫃（STOR. TK）</div>
+        </div>
+        <div class="hotspot" style="top:40%;left:62%;background:var(--deepyellow);" onclick="toggleDetail('lo_4')">
+          <div class="tooltip">④ G/E 滑油淨油機（G/E L.O. PURIFIER）</div>
+        </div>
+        <div class="hotspot" style="top:78%;left:50%;background:var(--deepyellow);" onclick="toggleDetail('lo_5')">
+          <div class="tooltip">⑤ M/E 滑油油槽（M/E L.O. SUMP TK）</div>
+        </div>
+        <div class="hotspot" style="top:73%;left:72%;background:var(--deepyellow);" onclick="toggleDetail('lo_6')">
+          <div class="tooltip">⑥ 滑油轉送暨主機淨油供油泵</div>
+        </div>
+        <div class="hotspot" style="top:40%;left:82%;background:var(--deepyellow);" onclick="toggleDetail('lo_7')">
+          <div class="tooltip">⑦ M/E 滑油淨油機（M/E L.O. PURIFIER）</div>
+        </div>
+        <div class="hotspot" style="top:18%;left:84%;background:var(--deepyellow);" onclick="toggleDetail('lo_8')">
+          <div class="tooltip">⑧ 主機滑油淨油加熱器（M/E PURIF. L.O. HTR）</div>
+        </div>
+        <div class="hotspot" style="top:18%;left:60%;background:var(--deepyellow);" onclick="toggleDetail('lo_9')">
+          <div class="tooltip">⑨ M/E 滑油沉澱櫃（M/E L.O. SETTL. TK）</div>
+        </div>
+        <div class="hotspot" style="top:82%;left:84%;background:var(--orange);" onclick="toggleDetail('lo_10')">
+          <div class="tooltip">⑩ 污油槽與汙泥線（SLUDGE TK & SLUDGE LINE）</div>
+        </div>
+      </div>
+      <div class="note">
+        💡 圓點位置以百分比方式配置，如與圖上實際設備位置略有差異，可直接調整各熱點的
+        <code>top</code> / <code>left</code> 百分比進行微調。點擊圓點會自動捲動到下方對應的「系統關鍵部件與流程概述」段落。
+      </div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>系統關鍵部件與流程概述（對應 ①～⑩）</h2>
+
+      <details id="lo_1">
+        <summary>① G/E 滑油匯集與迴流區（No.1–3 G/E L.O. Sumps & Overflow）</summary>
+        <p>左側三台 G/E（No.1、No.2、No.3）的滑油在運轉後會回流至各自的 SUMP，並透過溢流管與回油管匯集到共同管路。此區域是發電機滑油回收的起點，也是監控 G/E 潤滑狀態的重要位置。</p>
+      </details>
+
+      <details id="lo_2">
+        <summary>② G/E L.O. 沉澱櫃（G/E L.O. SETTL. TK）</summary>
+        <p>G/E L.O. 沉澱櫃利用時間與重力，讓較重的雜質與水分自然沉降至底部。上層較乾淨的滑油再送往下一階段的儲油櫃或淨油機，底部污油則定期排放至汙油槽。</p>
+      </details>
+
+      <details id="lo_3">
+        <summary>③ G/E L.O. 儲油櫃（G/E L.O. STOR. TK）</summary>
+        <p>儲油櫃存放已淨化或待供應的發電機滑油，扮演緩衝與庫存的角色。當 G/E 需要補油或系統需更換油品時，皆由此櫃作為主要來源。</p>
+      </details>
+
+      <details id="lo_4">
+        <summary>④ G/E 滑油淨油機（G/E L.O. PURIFIER）</summary>
+        <p>G/E 滑油淨油機多為離心式分離器，利用高速旋轉產生的離心力，將滑油中的水分與固體雜質分離。淨化後的滑油回到儲油櫃或直接補給 G/E，分離出的污油則排至汙泥系統。</p>
+      </details>
+
+      <details id="lo_5">
+        <summary>⑤ M/E 滑油油槽（M/E L.O. SUMP TK）</summary>
+        <p>主機滑油油槽位於主機下方，收集各軸承、連桿與齒輪回流的滑油。其油位與溫度是判斷主機潤滑狀態的關鍵指標，也是後續轉送與淨油的油源。</p>
+      </details>
+
+      <details id="lo_6">
+        <summary>⑥ 滑油轉送暨主機淨油供油泵（L.O. TRANS & M/E PURIF. L.O. FEED PUMP）</summary>
+        <p>此泵浦負責將 M/E L.O. SUMP 或其他儲櫃中的滑油抽出，送往 M/E 淨油機或不同儲油櫃之間作轉送。它是連結各油櫃與淨油設備的核心樞紐。</p>
+      </details>
+
+      <details id="lo_7">
+        <summary>⑦ M/E 滑油淨油機（M/E L.O. PURIFIER）</summary>
+        <p>M/E 滑油淨油機通常連續運轉，持續從油槽抽取滑油進行離心分離。透過長時間的循環淨化，可維持主機滑油的清潔度，延緩油品劣化與組件磨損。</p>
+      </details>
+
+      <details id="lo_8">
+        <summary>⑧ 主機滑油淨油加熱器（M/E PURIF. L.O. HTR）</summary>
+        <p>為提升離心分離效率，滑油在進入淨油機前先由加熱器加熱至適當溫度，使黏度降低、油水比重差增大。加熱溫度控制不當會影響分離效果，過高亦可能導致油品氧化。</p>
+      </details>
+
+      <details id="lo_9">
+        <summary>⑨ M/E 滑油沉澱櫃（M/E L.O. SETTL. TK）</summary>
+        <p>主機滑油沉澱櫃提供一個靜置空間，讓粗污滑油先行自然沉澱，再由上層油送往淨油機。此設計可減輕淨油機負荷，並讓較大顆粒與含水較高的部分在此被排除。</p>
+      </details>
+
+      <details id="lo_10">
+        <summary>⑩ 污油槽與汙泥線（SLUDGE TK & SLUDGE LINE）</summary>
+        <p>淨油機分離出的水分與汙泥透過汙泥線收集至污油槽（SLUDGE TK）。輪機人員需依規範定期將其送往岸上處理或經適當設備處理後排放，避免直接排入海中造成污染。</p>
+      </details>
+
+    </section>
+  </main>
+
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | L.O. TRANS & PURIF. SYSTEM</div>
+
+  <script>
+    function toggleDetail(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      const all = document.querySelectorAll('#detailsSection details');
+      all.forEach(d => { if (d !== el) d.removeAttribute('open'); });
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>主機潤滑油系統 — 互動詳解版</title>
+  <style>
+    :root{
+      --purple:#b04fd9; --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b; --yellow:#ffd94d;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd; --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif}
+    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);padding:16px 24px;z-index:8}
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{max-width:1080px;margin:auto;padding:24px;display:grid;grid-template-columns:340px 1fr;gap:24px}
+    @media (max-width:960px){main{grid-template-columns:1fr}}
+    .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;box-shadow:0 1px 2px rgba(15,23,42,.05)}
+    .diagram{width:100%;border-radius:8px;border:1px solid var(--border);position:relative}
+    .hotspot{position:absolute;border-radius:50%;cursor:pointer;opacity:0.3;transition:all .2s ease-in-out}
+    .hotspot:hover{opacity:1;transform:scale(1.2)}
+    .tooltip{position:absolute;background:rgba(0,0,0,.8);color:#fff;padding:6px 10px;border-radius:6px;font-size:.85rem;white-space:nowrap;transform:translate(-50%, -130%);display:none}
+    .hotspot:hover .tooltip{display:block}
+    .legend{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .chip{display:flex;align-items:center;gap:10px;border:1px dashed var(--border);border-radius:10px;padding:8px;background:#fff}
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .purple{background:var(--purple)}.orange{background:var(--orange)}.blue{background:var(--blue)}.green{background:var(--green)}.yellow{background:var(--lightyellow)}
+    .note{border-left:4px solid var(--accent);background:#eff6ff;padding:10px 14px;margin-top:8px;border-radius:8px}
+    details{border:1px solid var(--border);border-radius:8px;margin-top:10px;padding:10px 14px;background:#fff}
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{position:fixed;right:16px;bottom:16px;background:#ffffff; border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.08);padding:8px 12px;border-radius:10px;color:var(--muted);font-size:.85rem}
+    .brand{font-weight:600}
+    
+    .lightyellow{background:#fff8b0}
+    .deepyellow{background:#e6b800}
+
+</style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶輔鍋爐與潤滑油系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">主機潤滑油系統｜L.O. Service System</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch purple"></span> 紫色：吸入／回油線（Suction / Return）</div>
+<div class="chip"><span class="swatch orange"></span> 橘色：放油／排放（Drain / Discharge）</div>
+<div class="chip"><span class="swatch deepyellow"></span> 深黃色：主潤滑油供油線（Main L.O. Supply）</div>
+<div class="chip"><span class="swatch deepyellow"></span> 深黃色：發電機支路（Generator Branch）</div>
+<div class="chip"><span class="swatch lightyellow"></span> 淺黃色：主要設備（泵、冷卻器、過濾器等）</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（點擊顯示詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="lo_serv.jpg" alt="L.O. Service System" />
+        <div class="hotspot" style="top:38%;left:58%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('me')"><div class="tooltip">① MAIN ENGINE（主機）</div></div>
+<div class="hotspot" style="top:24%;left:25%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('lo_cooler')"><div class="tooltip">② L.O. COOLER（潤滑油冷卻器）</div></div>
+<div class="hotspot" style="top:38%;left:50%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('me_lo_in')"><div class="tooltip">③ MAIN L.O. INLET（主潤滑油入口）</div></div>
+<div class="hotspot" style="top:64%;left:84%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('filters')"><div class="tooltip">④ M/E L.O. 2ND FILTER（二次濾器）</div></div>
+<div class="hotspot" style="top:57%;left:44%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('pump_me')"><div class="tooltip">⑤ M/E LO PUMP（主機潤滑油泵）</div></div>
+<div class="hotspot" style="top:13%;left:10%;width:24px;height:24px;background:var(--green);" onclick="toggleDetail('gen1')"><div class="tooltip">⑥ NO.1 GEN. L.O. LINE（1號副機）</div></div>
+<div class="hotspot" style="top:34%;left:10%;width:24px;height:24px;background:var(--green);" onclick="toggleDetail('gen2')"><div class="tooltip">⑦ NO.2 GEN. L.O. LINE（2號副機）</div></div>
+<div class="hotspot" style="top:9%;left:10%;width:24px;height:24px;background:var(--green);" onclick="toggleDetail('gen3')"><div class="tooltip">⑧ NO.3 GEN. L.O. LINE（3號副機）</div></div>
+<div class="hotspot" style="top:72%;left:54%;width:24px;height:24px;background:var(--purple);" onclick="toggleDetail('sump')"><div class="tooltip">⑨ M/E L.O. SUMP（油底）</div></div>
+<div class="hotspot" style="top:10%;left:77%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('alarm')"><div class="tooltip">⑩ ALARM CHAMBERS（警報室）</div></div>
+      </div>
+      <div class="note">💡 滑鼠移至圓點顯示名稱，點擊則展開下方詳細說明；版面採白底淺灰風格。</div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>詳細部件說明</h2>
+      <details id="me"><summary>① 主機（Main Engine）</summary><p>潤滑油於主軸承、連桿與齒輪處形成油膜以減少磨耗並帶走熱量。</p></details>
+<details id="lo_cooler"><summary>② 潤滑油冷卻器（L.O. Cooler）</summary><p>以海水或淡水冷卻潤滑油，維持適當黏度。監控進出口溫差。</p></details>
+<details id="me_lo_in"><summary>③ 主潤滑油入口（Main L.O. Inlet）</summary><p>經過濾與冷卻後的油進入主機供油道。</p></details>
+<details id="filters"><summary>④ 二次濾器（2nd Filter, Auto Backwash）</summary><p>提供精濾並具自動反沖洗功能，降低壓損與堵塞風險。</p></details>
+<details id="pump_me"><summary>⑤ 主機潤滑油泵（M/E L.O. Pump）</summary><p>維持系統所需流量與壓力，常含旁通與止回保護。</p></details>
+<details id="gen1"><summary>⑥ 1號發電機潤滑支路（No.1 G/E L.O. Line）</summary><p>供應副機軸承與冷卻器。</p></details>
+<details id="gen2"><summary>⑦ 2號發電機潤滑支路（No.2 G/E L.O. Line）</summary><p>與#1類似，可並／切換維護。</p></details>
+<details id="gen3"><summary>⑧ 3號發電機潤滑支路（No.3 G/E L.O. Line）</summary><p>與#1、#2同型。</p></details>
+<details id="sump"><summary>⑨ 主機油底（M/E L.O. Sump）</summary><p>回油匯集並沉降雜質、水分，經處理後再循環。</p></details>
+<details id="alarm"><summary>⑩ 警報室（Alarm Chambers）</summary><p>監控壓力、溫度、濾器差壓等關鍵參數，異常觸發警報/聯鎖。</p></details>
+    </section>
+  
+    <section class="card">
+      <h2>主機潤滑油系統完整解析（L.O. Service System Overview）</h2>
+      <p>主機潤滑油系統的核心任務，是在各軸承、連桿、大齒輪與活塞裙部之間形成穩定油膜，
+      以<strong>減少摩擦磨耗、帶走熱量、並攜帶金屬磨屑與污染物</strong>離開摩擦面。系統通常包含：油底（Sump）、
+      潤滑油泵、冷卻器、濾器、分配總管以及回油管路等。</p>
+      <details>
+        <summary>▶ 流程一：由油底至主機供油（循環起點）</summary>
+        <p>潤滑油首先儲存在主機油底（Sump），經吸入管路送至主機潤滑油泵（M/E L.O. Pump）。
+        在此需注意油溫、黏度與吸入壓力，避免空蝕或吸空。泵出口則提供整個系統的基礎壓力與流量。</p>
+      </details>
+      <details>
+        <summary>▶ 流程二：冷卻與過濾（L.O. Cooler & Filters）</summary>
+        <p>泵出之油先通過冷卻器（L.O. Cooler），利用海水或淡水將油溫控制在適當範圍，
+        再通過主、二次濾器以去除金屬屑與雜質。濾器壓差上升是故障早期指標之一。</p>
+      </details>
+      <details>
+        <summary>▶ 流程三：主機與發電機支路供油</summary>
+        <p>經處理後之清潔潤滑油，分別送往主機軸承油路以及各發電機支路（G/E L.O. Lines）。
+        操作上須留意不同機組之壓力需求與切換閥位設定，以確保任何一台機組停機維修時，
+        不會影響到其他機組的供油安全。</p>
+      </details>
+      <details>
+        <summary>▶ 流程四：回油與監測</summary>
+        <p>潤滑油經各摩擦面後回流至油底，途中可能經過監測裝置或採樣點，用以檢測黏度、含水量、
+        金屬磨屑與酸價（TAN）等。這些數據可作為判斷主機狀態與油品壽命的重要依據。</p>
+      </details>
+      <p>透過理解上述循環流程，搭配圖中深黃色管路（滑油流向）與淺黃色設備標示，
+      讀者即可快速建立主機潤滑油系統的整體觀念，並在實務上更精準地進行巡檢與故障診斷。</p>
+    </section>
+
+    <section class="card">
+      <h2>主機潤滑油系統熱點顏色對照（①～⑩）</h2>
+      <ul>
+        <li>① MAIN ENGINE → 淺黃色（設備）</li>
+<li>② L.O. COOLER → 淺黃色（設備）</li>
+<li>③ MAIN L.O. INLET → 深黃色（滑油流向）</li>
+<li>④ M/E L.O. 2ND FILTER → 淺黃色（設備）</li>
+<li>⑤ M/E L.O. PUMP → 淺黃色（設備）</li>
+<li>⑥ GE L.O. LINE #1 → 深黃色（滑油支路）</li>
+<li>⑦ GE L.O. LINE #2 → 深黃色（滑油支路）</li>
+<li>⑧ GE L.O. LINE #3 → 深黃色（滑油支路）</li>
+<li>⑨ M/E SUMP → 淺黃色（設備）</li>
+<li>⑩ ALARM CHAMBERS → 淺黃色（設備）</li>
+      </ul>
+      <p>以上依照你最新的顏色規範：深黃色＝滑油管路、淺黃色＝設備／槽櫃、橘色＝排放線。</p>
+    </section>
+    </main>
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | Designed for Maritime Training</div>
+  <script>
+    function toggleDetail(id){
+      const el=document.getElementById(id);
+      if(!el)return;
+      const all=document.querySelectorAll('#detailsSection details');
+      all.forEach(d=>{if(d!==el)d.removeAttribute('open');});
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>船尾管潤滑油系統 — 互動詳解版</title>
+  <style>
+    :root{
+      --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b;
+      --red:#ff0000; --pink:#ff8fbf;
+      --deepyellow:#e6b800; --lightyellow:#fff8b0;
+      --black:#000000; --grey:#808080; --silver:#c0c0c0;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd;
+      --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif;
+    }
+    header{
+      position:sticky;top:0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      padding:16px 24px;
+      z-index:8;
+    }
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{
+      max-width:1080px;
+      margin:auto;
+      padding:24px;
+      display:grid;
+      grid-template-columns:340px 1fr;
+      gap:24px;
+    }
+    @media (max-width:960px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px 20px;
+      box-shadow:0 1px 2px rgba(15,23,42,.05);
+    }
+    .diagram{
+      width:100%;
+      border-radius:8px;
+      border:1px solid var(--border);
+      position:relative;
+    }
+    .hotspot{
+      position:absolute;
+      width:22px;height:22px;
+      border-radius:50%;
+      cursor:pointer;
+      opacity:0.35;
+      transition:all .2s ease-in-out;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hotspot:hover{
+      opacity:1;
+      transform:scale(1.2);
+    }
+    .tooltip{
+      position:absolute;
+      top:-28px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.8);
+      color:#fff;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:.8rem;
+      white-space:nowrap;
+      display:none;
+    }
+    .hotspot:hover .tooltip{display:block}
+    .legend{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px dashed var(--border);
+      border-radius:10px;
+      padding:8px;
+      background:#fff;
+    }
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .blue{background:var(--blue)}
+    .green{background:var(--green)}
+    .red{background:var(--red)}
+    .pink{background:var(--pink)}
+    .deepyellow{background:var(--deepyellow)}
+    .lightyellow{background:var(--lightyellow)}
+    .black{background:var(--black)}
+    .grey{background:var(--grey)}
+    .silver{background:var(--silver)}
+    .orange{background:var(--orange)}
+    .note{
+      border-left:4px solid var(--accent);
+      background:#eff6ff;
+      padding:10px 14px;
+      margin-top:8px;
+      border-radius:8px;
+    }
+    details{
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-top:10px;
+      padding:10px 14px;
+      background:#fff;
+    }
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{
+      position:fixed;
+      right:16px;bottom:16px;
+      background:#ffffff;
+      border:1px solid var(--border);
+      box-shadow:0 1px 3px rgba(0,0,0,.08);
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+    .brand{font-weight:600}
+    ul.hotspot-map{padding-left:1.1rem;margin:0.4rem 0 0;}
+    ul.hotspot-map li{margin:2px 0;font-size:0.9rem;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶管路系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">船尾管潤滑油系統｜STERN TUBE L.O. SYSTEM</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例（管路顏色）</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch blue"></span> 藍色：淡水管路</div>
+        <div class="chip"><span class="swatch green"></span> 綠色：海水管路</div>
+        <div class="chip"><span class="swatch red"></span> 紅色：燃油管路</div>
+        <div class="chip"><span class="swatch pink"></span> 粉紅色：柴油管路</div>
+        <div class="chip"><span class="swatch deepyellow"></span> 深黃色：滑油管路</div>
+        <div class="chip"><span class="swatch black"></span> 黑色：艙底水、衛生水管路</div>
+        <div class="chip"><span class="swatch grey"></span> 灰色：空氣管路</div>
+        <div class="chip"><span class="swatch silver"></span> 銀色：蒸汽、排氣管路</div>
+        <div class="chip"><span class="swatch orange"></span> 橙色：排放/放空線（Drain / Discharge）</div>
+        <div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與儀錶（Key Equipment &amp; Instruments）</div>
+      </div>
+
+      <h3 style="margin-top:18px;">①～⑩ 熱點顏色對照說明</h3>
+      <p style="margin:0 0 4px;font-size:0.9rem;">圓點顏色大致對應該設備所屬管路或功能類型：</p>
+      <ul class="hotspot-map">
+        <li><strong>① 前軸承艙潤滑油重力槽</strong> — 淺黃色：關鍵潤滑油儲槽與液位控制點。</li>
+        <li><strong>② 後軸承艙潤滑油重力槽</strong> — 淺黃色：尾軸區主要潤滑油來源與壓力基準。</li>
+        <li><strong>③ 前軸封潤滑油艙</strong> — 深黃色：軸封潤滑油主工作腔。</li>
+        <li><strong>④ 後軸封潤滑油艙</strong> — 深黃色：尾軸靠近海側之主要軸封油室。</li>
+        <li><strong>⑤ 軸承溫度感測器</strong> — 淺黃色：關鍵監測儀錶點。</li>
+        <li><strong>⑥ 軸封壓力表</strong> — 淺黃色：軸封壓力監測儀表。</li>
+        <li><strong>⑦ 軸封回油管</strong> — 深黃色：回流至重力槽的滑油管路。</li>
+        <li><strong>⑧ 軸承艙排氣管</strong> — 灰色：通氣／排氣管線。</li>
+        <li><strong>⑨ 補油閥</strong> — 深黃色：滑油補充與調整介面。</li>
+        <li><strong>⑩ 至潤滑油泵供油主管</strong> — 深黃色：連接整體滑油系統的主管路。</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（滑鼠移至圓點顯示名稱，點擊展開下方詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="STERN TUBE L.O. SYSTEM.jpg" alt="STERN TUBE L.O. SYSTEM" />
+        <!-- ①～⑩ 熱點；座標為大致估計，可依實際需求微調 -->
+        <div class="hotspot" style="top:12%;left:48%;background:var(--lightyellow);" onclick="toggleDetail('st_1')">
+          <div class="tooltip">① 前軸承艙潤滑油重力槽（Fore S/T L.O. Gravity Tank）</div>
+        </div>
+        <div class="hotspot" style="top:12%;left:72%;background:var(--lightyellow);" onclick="toggleDetail('st_2')">
+          <div class="tooltip">② 後軸承艙潤滑油重力槽（Aft S/T L.O. Gravity Tank）</div>
+        </div>
+        <div class="hotspot" style="top:40%;left:63%;background:var(--deepyellow);" onclick="toggleDetail('st_3')">
+          <div class="tooltip">③ 前軸封潤滑油艙（Fwd S/T Seal Oil Chamber）</div>
+        </div>
+        <div class="hotspot" style="top:40%;left:83%;background:var(--deepyellow);" onclick="toggleDetail('st_4')">
+          <div class="tooltip">④ 後軸封潤滑油艙（Aft S/T Seal Oil Chamber）</div>
+        </div>
+        <div class="hotspot" style="top:58%;left:33%;background:var(--lightyellow);" onclick="toggleDetail('st_5')">
+          <div class="tooltip">⑤ 軸承溫度感測器（Shaft Temp Sensor）</div>
+        </div>
+        <div class="hotspot" style="top:58%;left:73%;background:var(--lightyellow);" onclick="toggleDetail('st_6')">
+          <div class="tooltip">⑥ 軸封壓力表（Seal Oil Pressure Gauge）</div>
+        </div>
+        <div class="hotspot" style="top:70%;left:52%;background:var(--deepyellow);" onclick="toggleDetail('st_7')">
+          <div class="tooltip">⑦ 軸封回油管（Seal Oil Return Line）</div>
+        </div>
+        <div class="hotspot" style="top:22%;left:40%;background:var(--grey);" onclick="toggleDetail('st_8')">
+          <div class="tooltip">⑧ 軸承艙排氣管（Vent Line）</div>
+        </div>
+        <div class="hotspot" style="top:30%;left:92%;background:var(--deepyellow);" onclick="toggleDetail('st_9')">
+          <div class="tooltip">⑨ 補油閥（Make-up L.O. Valve）</div>
+        </div>
+        <div class="hotspot" style="top:84%;left:60%;background:var(--deepyellow);" onclick="toggleDetail('st_10')">
+          <div class="tooltip">⑩ 至潤滑油泵供油主管（To L.O. Transfer Pump Line）</div>
+        </div>
+      </div>
+      <div class="note">
+        💡 圓點位置以百分比方式配置，如與圖上 ①～⑩ 實際位置略有差異，可直接調整各熱點的
+        <code>top</code> / <code>left</code> 百分比進行微調。點擊圓點會自動捲動到下方對應的「系統關鍵部件與流程概述」段落。
+      </div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>系統關鍵部件與流程概述（對應 ①～⑩）</h2>
+
+      <details id="st_1">
+        <summary>① 前軸承艙潤滑油重力槽（Fore S/T L.O. Gravity Tank）</summary>
+        <p>前軸承艙潤滑油重力槽位於較高處，利用重力方式為前軸承與前軸封提供穩定油壓與流量。當尾軸轉動時，軸承與軸封必須持續浸潤在滑油中，以減少摩擦與磨損。</p>
+      </details>
+
+      <details id="st_2">
+        <summary>② 後軸承艙潤滑油重力槽（Aft S/T L.O. Gravity Tank）</summary>
+        <p>後軸承艙潤滑油重力槽主要服務尾部軸承與靠近船艉的軸封油室。藉由保持一定液位與壓力，確保在船舶縱搖、橫搖時，潤滑油仍能穩定覆蓋關鍵軸承表面。</p>
+      </details>
+
+      <details id="st_3">
+        <summary>③ 前軸封潤滑油艙（Fwd S/T Seal Oil Chamber）</summary>
+        <p>前軸封油艙位於船內側，主要負責前端軸封的潤滑與密封。其油壓必須略高於外界水壓，以防止海水由軸封間隙滲入軸承艙內，造成油水混合與腐蝕問題。</p>
+      </details>
+
+      <details id="st_4">
+        <summary>④ 後軸封潤滑油艙（Aft S/T Seal Oil Chamber）</summary>
+        <p>後軸封油艙靠近船艉與海水側，是防止海水進入船內的最後一道潤滑密封防線。操作時須定期檢查油色、油位與壓力，一旦壓力低於規定值，可能意味著軸封磨損或漏油。</p>
+      </details>
+
+      <details id="st_5">
+        <summary>⑤ 軸承溫度感測器（Shaft Temp Sensor）</summary>
+        <p>軸承溫度感測器連接監測系統，用以偵測尾軸軸承工作溫度。溫度異常升高通常與潤滑不足、軸心偏心或負荷異常有關，是判斷軸承是否健康的重要指標。</p>
+      </details>
+
+      <details id="st_6">
+        <summary>⑥ 軸封壓力表（Seal Oil Pressure Gauge）</summary>
+        <p>軸封壓力表顯示軸封油室內的壓力狀態，值過低可能導致海水滲入，值過高則可能造成密封件過度磨損或油外洩。輪機人員通常會將此壓力列為例行抄錶項目。</p>
+      </details>
+
+      <details id="st_7">
+        <summary>⑦ 軸封回油管（Seal Oil Return Line）</summary>
+        <p>軸封在運轉過程中會產生部分漏油與循環油，藉由回油管將多餘滑油送回重力槽或回收艙，以形成封閉循環。回油是否順暢，亦可反映軸封間隙與磨耗情況。</p>
+      </details>
+
+      <details id="st_8">
+        <summary>⑧ 軸承艙排氣管（Vent Line）</summary>
+        <p>排氣管使軸承艙或油室內的空氣、氣體得以排出，避免系統內形成氣阻，導致潤滑油流量不足。若通氣不良，可能出現油面波動或抽油困難等現象。</p>
+      </details>
+
+      <details id="st_9">
+        <summary>⑨ 補油閥（Make-up L.O. Valve）</summary>
+        <p>補油閥用於在例行巡檢或發現油面偏低時，手動或半自動補充潤滑油。適當的補油操作可保持系統內油量充足，同時避免因過度補油造成溢流或污染。</p>
+      </details>
+
+      <details id="st_10">
+        <summary>⑩ 至潤滑油泵供油主管（To L.O. Transfer Pump Line）</summary>
+        <p>此主管連接船上整體滑油系統，將回收或新補充的潤滑油導向相應之泵浦或處理設備。了解此線路走向，有助於在故障時快速判斷油源與流向，進行隔離或改接。</p>
+      </details>
+
+    </section>
+  </main>
+
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 2.0 | STERN TUBE L.O. SYSTEM</div>
+
+  <script>
+    function toggleDetail(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      const all = document.querySelectorAll('#detailsSection details');
+      all.forEach(d => { if (d !== el) d.removeAttribute('open'); });
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  </script>
+</body>
+</html>

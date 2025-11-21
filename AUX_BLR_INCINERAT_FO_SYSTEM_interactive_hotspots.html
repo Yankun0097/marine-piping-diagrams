@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>輔鍋爐與焚化爐燃油系統 — 互動詳解版</title>
+  <style>
+    :root{
+      --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b;
+      --red:#ff0000; --pink:#ff8fbf;
+      --deepyellow:#e6b800; --lightyellow:#fff8b0;
+      --black:#000000; --grey:#808080; --silver:#c0c0c0;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd;
+      --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif;
+    }
+    header{
+      position:sticky;top:0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      padding:16px 24px;
+      z-index:8;
+    }
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{
+      max-width:1080px;
+      margin:auto;
+      padding:24px;
+      display:grid;
+      grid-template-columns:340px 1fr;
+      gap:24px;
+    }
+    @media (max-width:960px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px 20px;
+      box-shadow:0 1px 2px rgba(15,23,42,.05);
+    }
+    .diagram{
+      width:100%;
+      border-radius:8px;
+      border:1px solid var(--border);
+      position:relative;
+    }
+    .hotspot{
+      position:absolute;
+      width:22px;height:22px;
+      border-radius:50%;
+      cursor:pointer;
+      opacity:0.35;
+      transition:all .2s ease-in-out;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hotspot:hover{
+      opacity:1;
+      transform:scale(1.2);
+    }
+    .tooltip{
+      position:absolute;
+      top:-28px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.8);
+      color:#fff;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:.8rem;
+      white-space:nowrap;
+      display:none;
+    }
+    .hotspot:hover .tooltip{display:block}
+    .legend{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px dashed var(--border);
+      border-radius:10px;
+      padding:8px;
+      background:#fff;
+    }
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .blue{background:var(--blue)}
+    .green{background:var(--green)}
+    .red{background:var(--red)}
+    .pink{background:var(--pink)}
+    .deepyellow{background:var(--deepyellow)}
+    .lightyellow{background:var(--lightyellow)}
+    .black{background:var(--black)}
+    .grey{background:var(--grey)}
+    .silver{background:var(--silver)}
+    .orange{background:var(--orange)}
+    .note{
+      border-left:4px solid var(--accent);
+      background:#eff6ff;
+      padding:10px 14px;
+      margin-top:8px;
+      border-radius:8px;
+    }
+    details{
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-top:10px;
+      padding:10px 14px;
+      background:#fff;
+    }
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{
+      position:fixed;
+      right:16px;bottom:16px;
+      background:#ffffff;
+      border:1px solid var(--border);
+      box-shadow:0 1px 3px rgba(0,0,0,.08);
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+    .brand{font-weight:600}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶管路系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">輔鍋爐與焚化爐燃油系統｜AUX.BLR &amp; INCINERAT. F.O. SYSTEM</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch blue"></span> 藍色：淡水管路</div>
+        <div class="chip"><span class="swatch green"></span> 綠色：海水管路</div>
+        <div class="chip"><span class="swatch red"></span> 紅色：燃油管路</div>
+        <div class="chip"><span class="swatch pink"></span> 粉紅色：柴油管路</div>
+        <div class="chip"><span class="swatch deepyellow"></span> 深黃色：滑油管路</div>
+        <div class="chip"><span class="swatch black"></span> 黑色：艙底水、衛生水管路</div>
+        <div class="chip"><span class="swatch grey"></span> 灰色：空氣管路</div>
+        <div class="chip"><span class="swatch silver"></span> 銀色：蒸汽、排氣管路</div>
+        <div class="chip"><span class="swatch orange"></span> 橙色：排放/放空線（Drain / Discharge）</div>
+        <div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與儀錶（Key Equipment &amp; Instruments）</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（滑鼠移至圓點顯示名稱，點擊展開下方詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="AUX.BLR &amp; INCINERAT. F. O. SYSTEM.jpg" alt="AUX.BLR &amp; INCINERAT. F. O. SYSTEM" />
+        <!-- ①～⑩ 熱點（座標為預估值，可依實際需求微調） -->
+        <div class="hotspot" style="top:20%;left:12%;background:var(--lightyellow);" onclick="toggleDetail('aux_1')">
+          <div class="tooltip">① AUX. BOILER（輔鍋爐本體）</div>
+        </div>
+        <div class="hotspot" style="top:32%;left:22%;background:var(--orange);" onclick="toggleDetail('aux_2')">
+          <div class="tooltip">② HTR（鍋爐燃油加熱器）</div>
+        </div>
+        <div class="hotspot" style="top:14%;left:50%;background:var(--red);" onclick="toggleDetail('aux_3')">
+          <div class="tooltip">③ PILOT BURNER PUMP（點火燃燒泵）</div>
+        </div>
+        <div class="hotspot" style="top:18%;left:78%;background:var(--pink);" onclick="toggleDetail('aux_4')">
+          <div class="tooltip">④ D.O. SERV. TK（柴油服務艙）</div>
+        </div>
+        <div class="hotspot" style="top:22%;left:88%;background:var(--red);" onclick="toggleDetail('aux_5')">
+          <div class="tooltip">⑤ LOW SULFUR F.O./H.F.O. SERV. TK（低硫燃油服務艙）</div>
+        </div>
+        <div class="hotspot" style="top:64%;left:50%;background:var(--lightyellow);" onclick="toggleDetail('aux_6')">
+          <div class="tooltip">⑥ WASTE OIL SETTL. TKS（廢油沉降槽）</div>
+        </div>
+        <div class="hotspot" style="top:76%;left:18%;background:var(--lightyellow);" onclick="toggleDetail('aux_7')">
+          <div class="tooltip">⑦ INCINERATOR（焚化爐）</div>
+        </div>
+        <div class="hotspot" style="top:78%;left:32%;background:var(--grey);" onclick="toggleDetail('aux_8')">
+          <div class="tooltip">⑧ GEN. SERV. AIR（焚化爐燃燒空氣）</div>
+        </div>
+        <div class="hotspot" style="top:86%;left:55%;background:var(--red);" onclick="toggleDetail('aux_9')">
+          <div class="tooltip">⑨ AUX.BLR F.O. BURNING PUMP（輔鍋爐燃油泵）</div>
+        </div>
+        <div class="hotspot" style="top:56%;left:76%;background:var(--orange);" onclick="toggleDetail('aux_10')">
+          <div class="tooltip">⑩ TO M/E &amp; G/E / RETURN LINES（通往主機/發電機與回油線）</div>
+        </div>
+      </div>
+      <div class="note">
+        💡 以上圓點位置為依圖面大致推估，若與實際 ①～⑩ 標註略有偏差，可直接調整各熱點的 <code>top</code> / <code>left</code> 百分比。
+      </div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>系統關鍵部件與流程概述（對應 ①～⑩）</h2>
+
+      <details id="aux_1">
+        <summary>① AUX. BOILER（輔鍋爐本體）</summary>
+        <p>輔鍋爐提供全船所需之蒸汽，包括加熱燃油、生活用熱水與其他用汽設備。其燃油由服務艙經燃油泵與加熱器供應，必須確保燃燒穩定與水位、蒸汽壓力在安全範圍內。</p>
+      </details>
+
+      <details id="aux_2">
+        <summary>② HTR（鍋爐燃油加熱器）</summary>
+        <p>位於輔鍋爐前方的燃油加熱器，透過蒸汽或熱媒將燃油升溫，使黏度適合霧化噴射。若加熱不足，燃燒不完全；過熱則可能造成氣阻與安全風險。</p>
+      </details>
+
+      <details id="aux_3">
+        <summary>③ PILOT BURNER PUMP（點火燃燒泵）</summary>
+        <p>提供點火燃燒器所需之小流量燃油，通常使用較乾淨的柴油。啟動程序需配合點火電極與燃燒監視器，確保火焰有可靠監控。</p>
+      </details>
+
+      <details id="aux_4">
+        <summary>④ D.O. SERV. TK（柴油服務艙）</summary>
+        <p>儲存柴油以供輔鍋爐與焚化爐啟動、點火或低負荷運轉時使用。柴油較易點燃，可在重油燃燒條件不佳時充當備援燃料。</p>
+      </details>
+
+      <details id="aux_5">
+        <summary>⑤ LOW SULFUR F.O./H.F.O. SERV. TK（低硫燃油服務艙）</summary>
+        <p>存放符合排放規範之低硫燃油，透過切換閥可選擇供應輔鍋爐、焚化爐或主機／發電機。切換時需注意燃油溫度與黏度過渡，以避免熱衝擊與管路洩漏。</p>
+      </details>
+
+      <details id="aux_6">
+        <summary>⑥ WASTE OIL SETTL. TKS（廢油沉降槽）</summary>
+        <p>收集分油機排出的污油與含油排水，經沉降後上層油可送往焚化爐燃燒，底層含水部分則按規定處理。是船上油污管理與減量的重要設備。</p>
+      </details>
+
+      <details id="aux_7">
+        <summary>⑦ INCINERATOR（焚化爐）</summary>
+        <p>焚化爐用來處理廚餘、垃圾與廢油，藉由高溫燃燒達到減量與無害化。操作時須控制燃燒溫度、鼓風量與投料量，並留意煙道溫度與排氣顏色。</p>
+      </details>
+
+      <details id="aux_8">
+        <summary>⑧ GEN. SERV. AIR（焚化爐燃燒空氣）</summary>
+        <p>焚化爐燃燒需充足空氣，由鼓風機提供一次及二次空氣。空氣量過少會導致黑煙與未完全燃燒，過多則降低爐溫與效率。</p>
+      </details>
+
+      <details id="aux_9">
+        <summary>⑨ AUX.BLR F.O. BURNING PUMP（輔鍋爐燃油泵）</summary>
+        <p>將燃油由服務艙送往輔鍋爐燃燒器，提供主要燃燒負荷。常見監測項目包括泵出口壓力、電動機電流與軸封漏油情況。</p>
+      </details>
+
+      <details id="aux_10">
+        <summary>⑩ TO M/E &amp; G/E / RETURN LINES（通往主機/發電機與回油線）</summary>
+        <p>部分燃油管路可延伸至主機與發電機燃油系統，或將多餘燃油與回油導回服務艙與廢油系統。理解這些連通關係有助於操作時避免錯送與溢油事故。</p>
+      </details>
+
+    </section>
+  </main>
+
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | AUX.BLR &amp; INCINERAT. F.O. SYSTEM</div>
+
+  <script>
+    function toggleDetail(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      const all = document.querySelectorAll('#detailsSection details');
+      all.forEach(d => { if (d !== el) d.removeAttribute('open'); });
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  </script>
+</body>
+</html>

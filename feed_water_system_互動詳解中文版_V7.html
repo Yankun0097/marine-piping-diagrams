@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>輔鍋爐給水系統 — 互動詳解版</title>
+  <style>
+    :root{
+      --purple:#b04fd9; --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b; --yellow:#ffd94d;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd; --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif}
+    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);padding:16px 24px;z-index:8}
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{max-width:1080px;margin:auto;padding:24px;display:grid;grid-template-columns:340px 1fr;gap:24px}
+    @media (max-width:960px){main{grid-template-columns:1fr}}
+    .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;box-shadow:0 1px 2px rgba(15,23,42,.05)}
+    .diagram{width:100%;border-radius:8px;border:1px solid var(--border);position:relative}
+    .hotspot{position:absolute;border-radius:50%;cursor:pointer;opacity:0.3;transition:all .2s ease-in-out}
+    .hotspot:hover{opacity:1;transform:scale(1.2)}
+    .tooltip{position:absolute;background:rgba(0,0,0,.8);color:#fff;padding:6px 10px;border-radius:6px;font-size:.85rem;white-space:nowrap;transform:translate(-50%, -130%);display:none}
+    .hotspot:hover .tooltip{display:block}
+    .legend{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .chip{display:flex;align-items:center;gap:10px;border:1px dashed var(--border);border-radius:10px;padding:8px;background:#fff}
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .purple{background:var(--purple)}.orange{background:var(--orange)}.blue{background:var(--blue)}.green{background:var(--green)}.yellow{background:var(--blue)}
+    .note{border-left:4px solid var(--accent);background:#eff6ff;padding:10px 14px;margin-top:8px;border-radius:8px}
+    details{border:1px solid var(--border);border-radius:8px;margin-top:10px;padding:10px 14px;background:#fff}
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{position:fixed;right:16px;bottom:16px;background:#ffffff; border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.08);padding:8px 12px;border-radius:10px;color:var(--muted);font-size:.85rem}
+    .brand{font-weight:600}
+    
+    .red{background:#ff0000}
+    .pink{background:#ff8fbf}
+    .black{background:#000000}
+    .grey{background:#808080}
+    .silver{background:#c0c0c0}
+
+
+    .lightyellow{background:#fff8b0}
+    .deepyellow{background:#e6b800}
+
+</style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶輔鍋爐與潤滑油系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">輔鍋爐給水系統｜Feed Water System</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch blue"></span> 藍色：淡水管路</div>
+        <div class="chip"><span class="swatch green"></span> 綠色：海水管路</div>
+        <div class="chip"><span class="swatch red"></span> 紅色：燃油管路</div>
+        <div class="chip"><span class="swatch pink"></span> 粉紅色：柴油管路</div>
+        <div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與儀錶（Key Equipment & Instruments）</div>
+        <div class="chip"><span class="swatch black"></span> 黑色：艙底水、衛生水管路</div>
+        <div class="chip"><span class="swatch grey"></span> 灰色：空氣管路</div>
+        <div class="chip"><span class="swatch silver"></span> 銀色：蒸汽、排氣管路</div>
+      </div>
+<div class="chip"><span class="swatch orange"></span> 橘色：排放線（Discharge / Drain）</div>
+<div class="chip"><span class="swatch blue"></span> 藍色：給水主幹線（Main Feed Line）</div>
+<div class="chip"><span class="swatch green"></span> 綠色：旁路／支路（Bypass / Branch）</div>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（點擊顯示詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="feed_water.jpg" alt="Feed Water System" />
+        <div class="hotspot" style="top:78%;left:76%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('fw_tank')"><div class="tooltip">① CASCADE TANK（階梯水槽）</div></div>
+<div class="hotspot" style="top:81%;left:60%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('fw_pump1')"><div class="tooltip">② FEED PUMP NO.1（給水泵）</div></div>
+<div class="hotspot" style="top:74%;left:58%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('fw_pump2')"><div class="tooltip">③ FEED PUMP NO.2（給水泵）</div></div>
+<div class="hotspot" style="top:34%;left:33%;width:24px;height:24px;background:var(--blue);" style="top:34%;left:33%;width:24px;height:24px;background:var(--silver);" onclick="toggleDetail('aux_boiler')"><div class="tooltip">④ AUX. BOILER（輔鍋爐）</div></div>
+<div class="hotspot" style="top:14%;left:17%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('condenser')"><div class="tooltip">⑤ LEVEL CONDENSER（冷凝器/集水器）</div></div>
+<div class="hotspot" style="top:29%;left:18%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('dft')"><div class="tooltip">⑥ D.F.T.（脫氣給水箱）</div></div>
+<div class="hotspot" style="top:17%;left:29%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('low_level')"><div class="tooltip">⑦ LOW LEVEL ALARM（低水位警報）</div></div>
+<div class="hotspot" style="top:59%;left:43%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('main_line')"><div class="tooltip">⑧ MAIN FEED LINE（給水主線）</div></div>
+<div class="hotspot" style="top:54%;left:35%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('to_bw1')"><div class="tooltip">⑨ TO B.W.（至鍋水迴路）</div></div>
+<div class="hotspot" style="top:63%;left:51%;width:24px;height:24px;background:var(--orange);" onclick="toggleDetail('valve')"><div class="tooltip">⑩ DISCHARGE VALVE（排出閥）</div></div>
+      </div>
+      <div class="note">💡 滑鼠移至圓點顯示名稱，點擊則展開下方詳細說明；版面採白底淺灰風格。</div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>詳細部件說明</h2>
+      <details id="fw_tank"><summary>① CASCADE TANK（階梯水槽）</summary><p>作為補給水的緩衝與除氣，透過多層跌水提高溶氣逸散，減少氧腐蝕。Cascade tank for deaeration and buffer.</p></details>
+<details id="fw_pump1"><summary>② 給水泵 NO.1（Feed Pump #1）</summary><p>將處理後的給水送入鍋爐。通常為離心泵，需監控吸入壓力與出口壓力。</p></details>
+<details id="fw_pump2"><summary>③ 給水泵 NO.2（Feed Pump #2, standby/parallel）</summary><p>備用或並聯運轉以因應負荷變動與維修切換。</p></details>
+<details id="aux_boiler"><summary>④ 輔鍋爐（Auxiliary Boiler）</summary><p>提供船舶日常蒸汽需求。監控水位、壓力與安全閥狀況。</p></details>
+<details id="condenser"><summary>⑤ 冷凝器／集水器（Level Condenser）</summary><p>將蒸汽冷凝為水並回收，提高循環效率。</p></details>
+<details id="dft"><summary>⑥ 脫氣給水箱（D.F.T.）</summary><p>利用蒸汽加熱驅除溶解氧與二氧化碳，提升鍋爐給水品質。</p></details>
+<details id="low_level"><summary>⑦ 低水位警報（Low Level Alarm）</summary><p>水位過低會觸發警報與保護，必要時自動停爐以防乾燒。</p></details>
+<details id="main_line"><summary>⑧ 給水主幹線（Main Feed Line）</summary><p>連接泵浦與鍋爐的主要輸送管線，通常配置止回與截止閥。</p></details>
+<details id="to_bw1"><summary>⑨ 至鍋水迴路（To B.W.）</summary><p>由主幹線分流至鍋水處理與補注系統。</p></details>
+<details id="valve"><summary>⑩ 排出閥（Discharge Valve）</summary><p>用於放空、切換或檢修時隔離。操作前確認冷卻與壓力釋放。</p></details>
+    </section>
+  
+    <section class="card">
+      <h2>船舶輔鍋爐與潤滑油系統完整解析</h2>
+      <p>本章節將補充說明船舶輔鍋爐（Aux. Boiler）與主機潤滑油系統（Main Engine Lube Oil System）
+      的工作原理、流向、常見操作模式與巡檢要點，以協助輪機士快速建立整體系統觀念。</p>
+
+      <details>
+        <summary>▶ 輔鍋爐系統（Aux. Boiler System）功能概述</summary>
+        <p>包含燃燒控制、給水調節、蒸汽壓力維持、最低循環量保護、低水位停爐等。</p>
+      </details>
+
+      <details>
+        <summary>▶ 潤滑油系統（Lube Oil System）核心流程</summary>
+        <p>含LO Pump → Cooler → Filter → Main Engine → Sump回油流程，並說明各點壓力與溫度監控要求。</p>
+      </details>
+
+      <details>
+        <summary>▶ 操作與故障模式補充</summary>
+        <p>針對LO溫度過高、濾器壓差上升、輔鍋爐水位不穩、燃燒狀況不良等提供分析方向。</p>
+      </details>
+    </section>
+
+<section class="card">
+  <h2>①～⑩ 熱點顏色分類對照說明</h2>
+  <ul>
+    <li>① CASCADE TANK → 藍色（淡水）</li>
+    <li>② FEED PUMP NO.1 → 藍色（淡水）</li>
+    <li>③ FEED PUMP NO.2 → 藍色（淡水）</li>
+    <li>④ AUX. BOILER → 銀色（蒸汽）</li>
+    <li>⑤ LEVEL CONDENSER → 藍色（淡水）</li>
+    <li>⑥ D.F.T. → 藍色（淡水）</li>
+    <li>⑦ LOW LEVEL ALARM → 藍色（淡水）</li>
+    <li>⑧ MAIN FEED LINE → 藍色（淡水）</li>
+    <li>⑨ TO B.W. → 藍色（淡水）</li>
+    <li>⑩ DISCHARGE VALVE → 藍色（淡水）</li>
+  </ul>
+  <p>以上分類依據船舶輔鍋爐給水系統（Feed Water System）之實際流體性質判定，蒸汽相關以銀色標示，其他給水部件皆為淡水（藍色）。</p>
+</section>
+</main>
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | Designed for Maritime Training</div>
+  <script>
+    function toggleDetail(id){
+      const el=document.getElementById(id);
+      if(!el)return;
+      const all=document.querySelectorAll('#detailsSection details');
+      all.forEach(d=>{if(d!==el)d.removeAttribute('open');});
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  </script>
+</body>
+</html>

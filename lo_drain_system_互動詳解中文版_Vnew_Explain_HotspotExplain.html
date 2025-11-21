@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>潤滑油排放系統 — 互動詳解版</title>
+  <style>
+    :root{
+      --purple:#b04fd9; --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b; --yellow:#ffd94d;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd; --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif}
+    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);padding:16px 24px;z-index:8}
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{max-width:1080px;margin:auto;padding:24px;display:grid;grid-template-columns:340px 1fr;gap:24px}
+    @media (max-width:960px){main{grid-template-columns:1fr}}
+    .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;box-shadow:0 1px 2px rgba(15,23,42,.05)}
+    .diagram{width:100%;border-radius:8px;border:1px solid var(--border);position:relative}
+    .hotspot{position:absolute;border-radius:50%;cursor:pointer;opacity:0.3;transition:all .2s ease-in-out}
+    .hotspot:hover{opacity:1;transform:scale(1.2)}
+    .tooltip{position:absolute;background:rgba(0,0,0,.8);color:#fff;padding:6px 10px;border-radius:6px;font-size:.85rem;white-space:nowrap;transform:translate(-50%, -130%);display:none}
+    .hotspot:hover .tooltip{display:block}
+    .legend{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .chip{display:flex;align-items:center;gap:10px;border:1px dashed var(--border);border-radius:10px;padding:8px;background:#fff}
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .purple{background:var(--purple)}.orange{background:var(--orange)}.blue{background:var(--blue)}.green{background:var(--green)}.yellow{background:var(--lightyellow)}
+    .note{border-left:4px solid var(--accent);background:#eff6ff;padding:10px 14px;margin-top:8px;border-radius:8px}
+    details{border:1px solid var(--border);border-radius:8px;margin-top:10px;padding:10px 14px;background:#fff}
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{position:fixed;right:16px;bottom:16px;background:#ffffff; border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.08);padding:8px 12px;border-radius:10px;color:var(--muted);font-size:.85rem}
+    .brand{font-weight:600}
+    
+    .lightyellow{background:#fff8b0}
+    .deepyellow{background:#e6b800}
+
+</style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶輔鍋爐與潤滑油系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">潤滑油排放系統｜L.O. Drain System</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch purple"></span> 紫色：回收/回流線（Return）</div>
+<div class="chip"><span class="swatch orange"></span> 橘色：排放/放油線（Drain / Discharge）</div>
+<div class="chip"><span class="swatch deepyellow"></span> 深黃色：集油/輸送線（Collection / Transfer）</div>
+<div class="chip"><span class="swatch green"></span> 綠色：氣動/輔助支路（Aux / Air）</div>
+<div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與槽（Key Equipment & Tanks）</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（點擊顯示詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="lo_drain.jpg" alt="L.O. Drain System" />
+        <div class="hotspot" style="top:63%;left:63%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('scav_box')"><div class="tooltip">① SCAV. BOX DRAIN（掃氣箱排水）</div></div>
+<div class="hotspot" style="top:90%;left:22%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('sludge_tk')"><div class="tooltip">② WASTE OIL/SLUDGE TANK（廢油槽）</div></div>
+<div class="hotspot" style="top:81%;left:83%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('me_sump')"><div class="tooltip">③ M/E L.O. SUMP TANK（主機油底）</div></div>
+<div class="hotspot" style="top:66%;left:30%;width:24px;height:24px;background:var(--blue);" onclick="toggleDetail('main_line')"><div class="tooltip">④ MAIN L.O. DRAIN LINE（排油主線）</div></div>
+<div class="hotspot" style="top:32%;left:45%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('air_comp')"><div class="tooltip">⑤ MAIN AIR COMPRS（主空壓機）</div></div>
+<div class="hotspot" style="top:25%;left:39%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('dry')"><div class="tooltip">⑥ CONT. AIR DRYER（空氣乾燥機）</div></div>
+<div class="hotspot" style="top:7%;left:80%;width:24px;height:24px;background:var(--lightyellow);" onclick="toggleDetail('set_tk')"><div class="tooltip">⑦ SETTLING/STOR. TK（沉降/儲存槽）</div></div>
+<div class="hotspot" style="top:53%;left:9%;width:24px;height:24px;background:var(--orange);" onclick="toggleDetail('from_bilge')"><div class="tooltip">⑧ FROM BILGE PUMP（由艙底來）</div></div>
+      </div>
+      <div class="note">💡 滑鼠移至圓點顯示名稱，點擊則展開下方詳細說明；版面採白底淺灰風格。</div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>詳細部件說明</h2>
+      <details id="scav_box"><summary>① 掃氣箱排水（Scavenge Box Drain）</summary><p>匯集掃氣箱冷凝油水混合物，經分離後導入廢油或處理系統。</p></details>
+<details id="sludge_tk"><summary>② 廢油/污油槽（Waste / Sludge Tank）</summary><p>存放排放油泥與受污染油品，待岸上或焚燒處理。</p></details>
+<details id="me_sump"><summary>③ 主機油底（M/E L.O. Sump）</summary><p>回油沉降雜質，部分回送處理或再利用。</p></details>
+<details id="main_line"><summary>④ 排油主線（Main Drain Line）</summary><p>匯集各處放油點，通往污油/廢油處理。</p></details>
+<details id="air_comp"><summary>⑤ 主空壓機（Main Air Compressors）</summary><p>潤滑油與冷凝水的排放需納入油水管理。</p></details>
+<details id="dry"><summary>⑥ 空氣乾燥機（Control Air Dryer）</summary><p>氣路冷凝排水含油需妥善收集。</p></details>
+<details id="set_tk"><summary>⑦ 沉降/儲存槽（Settling / Storage Tanks）</summary><p>油水分層後上清液可回收，下層污泥導入廢油槽。</p></details>
+<details id="from_bilge"><summary>⑧ 由艙底泵來（From Bilge Pump）</summary><p>艙底含油水不得直接外排，須依規程序處理。</p></details>
+    </section>
+  
+    <section class="card">
+      <h2>潤滑油排放系統完整解析（L.O. Drain System Overview）</h2>
+      <p>潤滑油排放系統的任務，是將各機械設備運轉過程中產生的<strong>含油廢液、冷凝水與受污染潤滑油</strong>
+      有系統地收集與分類，導向適當的儲存槽或處理設備，避免直接排入艙底或海中而違反國際公約。</p>
+      <details>
+        <summary>▶ 流程一：各設備放油與排放點</summary>
+        <p>主機油底（M/E Sump）、掃氣箱排水（Scavenge Box Drain）、空壓機與空氣乾燥機等，
+        在運轉過程中都會產生含油冷凝水或廢油。這些排放點透過支路匯入排油主線（Main Drain Line），
+        圖中以深黃色與橘色管路加以區分其功能。</p>
+      </details>
+      <details>
+        <summary>▶ 流程二：集油與分流至廢油槽/污油槽</summary>
+        <p>各處匯集來的含油液體，依系統設計可先進入中間集油槽或直接送往廢油/污油槽
+        （Waste / Sludge Tank）。在此階段常會搭配比重分層與靜置沉降，以減少後續處理負荷。</p>
+      </details>
+      <details>
+        <summary>▶ 流程三：由艙底泵與油水分離設備接手</summary>
+        <p>艙底含油水多半會由艙底泵（Bilge Pump）抽送至油水分離器與相關處理系統，
+        達到規定含油濃度後方可依國際公約排放。未達標之含油水則需再循環或送回廢油槽。</p>
+      </details>
+      <details>
+        <summary>▶ 管制與環保重點</summary>
+        <p>潤滑油排放系統與船舶油污防治紀錄密切相關，必須確實操作相關閥件與監測設備，
+        確保任何排放皆符合法規。圖中淺黃色標示關鍵槽櫃與設備位置，方便輪機人員在緊急狀況下
+        快速確認油流去向與隔離方式。</p>
+      </details>
+      <p>透過掌握上述流程，學習者可以將排放系統視為「船上所有含油液體的最後防線」，
+      並善用圖示中的色彩與設備標示，強化對環保與法規遵循的實務意識。</p>
+    </section>
+
+    <section class="card">
+      <h2>潤滑油排放系統熱點顏色對照（①～⑩）</h2>
+      <ul>
+        <li>① SCAV. BOX DRAIN → 淺黃色（設備）</li>
+<li>② WASTE/SLUDGE TANK → 淺黃色（設備）</li>
+<li>③ M/E SUMP → 淺黃色（設備）</li>
+<li>④ MAIN L.O. DRAIN LINE → 深黃色（排放主線）</li>
+<li>⑤ MAIN AIR COMPRESSOR → 淺黃色（設備）</li>
+<li>⑥ AIR DRYER → 淺黃色（設備）</li>
+<li>⑦ SETTLING/STORAGE TANK → 淺黃色（設備）</li>
+<li>⑧ FROM BILGE PUMP → 橘色（排放/放油）</li>
+      </ul>
+      <p>以上依照你最新的顏色規範：深黃色＝滑油管路、淺黃色＝設備／槽櫃、橘色＝排放線。</p>
+    </section>
+    </main>
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | Designed for Maritime Training</div>
+  <script>
+    function toggleDetail(id){
+      const el=document.getElementById(id);
+      if(!el)return;
+      const all=document.querySelectorAll('#detailsSection details');
+      all.forEach(d=>{if(d!==el)d.removeAttribute('open');});
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  </script>
+</body>
+</html>

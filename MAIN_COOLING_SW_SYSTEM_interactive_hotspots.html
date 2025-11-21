@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>主冷卻海水系統 — MAIN COOLING S.W. SYSTEM 互動詳解版</title>
+  <style>
+    :root{
+      --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b;
+      --red:#ff0000; --pink:#ff8fbf;
+      --deepyellow:#e6b800; --lightyellow:#fff8b0;
+      --black:#000000; --grey:#808080; --silver:#c0c0c0;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd;
+      --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif;
+    }
+    header{
+      position:sticky;top:0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      padding:16px 24px;
+      z-index:8;
+    }
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{
+      max-width:1080px;
+      margin:auto;
+      padding:24px;
+      display:grid;
+      grid-template-columns:340px 1fr;
+      gap:24px;
+    }
+    @media (max-width:960px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px 20px;
+      box-shadow:0 1px 2px rgba(15,23,42,.05);
+    }
+    .diagram{
+      width:100%;
+      border-radius:8px;
+      border:1px solid var(--border);
+      position:relative;
+    }
+    .hotspot{
+      position:absolute;
+      width:22px;height:22px;
+      border-radius:50%;
+      cursor:pointer;
+      opacity:0.35;
+      transition:all .2s ease-in-out;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hotspot:hover{
+      opacity:1;
+      transform:scale(1.2);
+    }
+    .tooltip{
+      position:absolute;
+      top:-28px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.8);
+      color:#fff;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:.8rem;
+      white-space:nowrap;
+      display:none;
+    }
+    .hotspot:hover .tooltip{display:block}
+    .legend{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px dashed var(--border);
+      border-radius:10px;
+      padding:8px;
+      background:#fff;
+    }
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .blue{background:var(--blue)}
+    .green{background:var(--green)}
+    .red{background:var(--red)}
+    .pink{background:var(--pink)}
+    .deepyellow{background:var(--deepyellow)}
+    .lightyellow{background:var(--lightyellow)}
+    .black{background:var(--black)}
+    .grey{background:var(--grey)}
+    .silver{background:var(--silver)}
+    .orange{background:var(--orange)}
+    .note{
+      border-left:4px solid var(--accent);
+      background:#eff6ff;
+      padding:10px 14px;
+      margin-top:8px;
+      border-radius:8px;
+    }
+    details{
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-top:10px;
+      padding:10px 14px;
+      background:#fff;
+    }
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{
+      position:fixed;
+      right:16px;bottom:16px;
+      background:#ffffff;
+      border:1px solid var(--border);
+      box-shadow:0 1px 3px rgba(0,0,0,.08);
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+    .brand{font-weight:600}
+    ul.hotspot-map{padding-left:1.1rem;margin:0.4rem 0 0;}
+    ul.hotspot-map li{margin:2px 0;font-size:0.9rem;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶管路系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">主冷卻海水系統｜MAIN COOLING S.W. SYSTEM</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例（管路顏色）</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch blue"></span> 藍色：淡水管路</div>
+        <div class="chip"><span class="swatch green"></span> 綠色：海水管路</div>
+        <div class="chip"><span class="swatch red"></span> 紅色：燃油管路</div>
+        <div class="chip"><span class="swatch pink"></span> 粉紅色：柴油管路</div>
+        <div class="chip"><span class="swatch deepyellow"></span> 深黃色：滑油管路</div>
+        <div class="chip"><span class="swatch black"></span> 黑色：艙底水、衛生水管路</div>
+        <div class="chip"><span class="swatch grey"></span> 灰色：空氣管路</div>
+        <div class="chip"><span class="swatch silver"></span> 銀色：蒸汽、排氣管路</div>
+        <div class="chip"><span class="swatch orange"></span> 橙色：排放/放空線（Drain / Discharge）</div>
+        <div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與儀錶（Key Equipment &amp; Instruments）</div>
+      </div>
+
+      <h3 style="margin-top:18px;">①～⑩ 熱點顏色對照說明</h3>
+      <p style="margin:0 0 4px;font-size:0.9rem;">圓點顏色大致對應該設備所屬管路或功能類型：</p>
+      <ul class="hotspot-map">
+        <li><strong>① 高位海水櫃 High Sea Chest</strong> — 綠色：主海水吸入口，冷卻水系統起點。</li>
+        <li><strong>② 低位海水櫃 Low Sea Chest</strong> — 綠色：吃水不同時切換使用的海水吸入口。</li>
+        <li><strong>③ No.1 主冷卻海水泵 Main C.S.W. Pump No.1</strong> — 綠色：供應整套海水冷卻流量。</li>
+        <li><strong>④ No.2 主冷卻海水泵 Main C.S.W. Pump No.2</strong> — 綠色：與 No.1 一用一備或並聯運轉。</li>
+        <li><strong>⑤ 主機潤滑油冷卻器 Main L.O. Cooler</strong> — 深黃色：以海水冷卻主機潤滑油。</li>
+        <li><strong>⑥ 主機淡水冷卻器 Main F.W. Cooler</strong> — 藍色/綠色：海水冷卻主機淡水回路。</li>
+        <li><strong>⑦ 淡水製造器 F.W. Generator</strong> — 綠色/橙色：利用海水與蒸汽製造淡水。</li>
+        <li><strong>⑧ 噴射器 Ejector Pump</strong> — 綠色：產生真空，維持淡水製造器運轉。</li>
+        <li><strong>⑨ 加藥槽 Chemical Tank</strong> — 淺黃色：向淡水系統注入藥劑。</li>
+        <li><strong>⑩ 排出至外海 Overboard Discharge</strong> — 綠色/橙色：冷卻後海水排出船外。</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（滑鼠移至圓點顯示名稱，點擊展開下方詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="MAIN COOLING S.W. SYSTEM.jpg" alt="MAIN COOLING S.W. SYSTEM" />
+        <!-- ①～⑩ 熱點；座標為大致估計，可依實際需求微調 -->
+        <div class="hotspot" style="top:78%;left:90%;background:var(--green);" onclick="toggleDetail('mc_1')">
+          <div class="tooltip">① 高位海水櫃（High Sea Chest）</div>
+        </div>
+        <div class="hotspot" style="top:85%;left:8%;background:var(--green);" onclick="toggleDetail('mc_2')">
+          <div class="tooltip">② 低位海水櫃（Low Sea Chest）</div>
+        </div>
+        <div class="hotspot" style="top:40%;left:71%;background:var(--green);" onclick="toggleDetail('mc_3')">
+          <div class="tooltip">③ No.1 主冷卻海水泵（Main C.S.W. Pump No.1）</div>
+        </div>
+        <div class="hotspot" style="top:32%;left:71%;background:var(--green);" onclick="toggleDetail('mc_4')">
+          <div class="tooltip">④ No.2 主冷卻海水泵（Main C.S.W. Pump No.2）</div>
+        </div>
+        <div class="hotspot" style="top:27%;left:39%;background:var(--deepyellow);" onclick="toggleDetail('mc_5')">
+          <div class="tooltip">⑤ 主機潤滑油冷卻器（Main L.O. Cooler）</div>
+        </div>
+        <div class="hotspot" style="top:27%;left:27%;background:var(--blue);" onclick="toggleDetail('mc_6')">
+          <div class="tooltip">⑥ 主機淡水冷卻器（Main F.W. Cooler）</div>
+        </div>
+        <div class="hotspot" style="top:63%;left:36%;background:var(--green);" onclick="toggleDetail('mc_7')">
+          <div class="tooltip">⑦ 淡水製造器（F.W. Generator）</div>
+        </div>
+        <div class="hotspot" style="top:60%;left:48%;background:var(--green);" onclick="toggleDetail('mc_8')">
+          <div class="tooltip">⑧ 噴射器（Ejector Pump）</div>
+        </div>
+        <div class="hotspot" style="top:65%;left:58%;background:var(--lightyellow);" onclick="toggleDetail('mc_9')">
+          <div class="tooltip">⑨ 加藥槽（Chemical Tank）</div>
+        </div>
+        <div class="hotspot" style="top:78%;left:50%;background:var(--green);" onclick="toggleDetail('mc_10')">
+          <div class="tooltip">⑩ 排出至外海（Overboard Discharge）</div>
+        </div>
+      </div>
+      <div class="note">
+        💡 圓點位置以百分比方式配置，如與圖上實際設備位置略有差異，可直接調整各熱點的
+        <code>top</code> / <code>left</code> 百分比進行微調。點擊圓點會自動捲動到下方對應的「系統關鍵部件與流程概述」段落。
+      </div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>系統關鍵部件與流程概述（對應 ①～⑩）</h2>
+
+      <details id="mc_1">
+        <summary>① 高位海水櫃（High Sea Chest）</summary>
+        <p>高位海水櫃設置於船體較高位置，在正常吃水時作為主海水吸入口。其格柵可阻擋大型異物進入，並透過管路連接主冷卻海水泵。操作上須定期檢查是否有堵塞與腐蝕情形。</p>
+      </details>
+
+      <details id="mc_2">
+        <summary>② 低位海水櫃（Low Sea Chest）</summary>
+        <p>低位海水櫃則位於較低位置，在淺吃水或特殊工況時使用，以確保海水吸入口不會露出水面。輪機人員可依航行狀況切換高、低位海水櫃，以保持穩定吸水。</p>
+      </details>
+
+      <details id="mc_3">
+        <summary>③ No.1 主冷卻海水泵（Main Cooling S.W. Pump No.1）</summary>
+        <p>No.1 主冷卻海水泵是整套海水冷卻系統的「心臟」，將海水由海水櫃吸入後送往各冷卻器。通常採一用一備配置，必要時亦可兩台並聯，以因應高負荷或高溫海域。</p>
+      </details>
+
+      <details id="mc_4">
+        <summary>④ No.2 主冷卻海水泵（Main Cooling S.W. Pump No.2）</summary>
+        <p>No.2 泵與 No.1 互為備援，確保在其中一台維修或故障時，仍能維持主機與附屬設備的冷卻需求。操作時需注意兩台泵切換順序及閥位變化，避免水錘或流量中斷。</p>
+      </details>
+
+      <details id="mc_5">
+        <summary>⑤ 主機潤滑油冷卻器（Main L.O. Cooler）</summary>
+        <p>主機潤滑油冷卻器利用海水作為冷卻媒介，將潤滑油溫度控制在適當範圍，以維持油品黏度與潤滑性能。若海水流量不足或冷卻管束污損，會導致潤滑油溫度偏高，影響主機壽命。</p>
+      </details>
+
+      <details id="mc_6">
+        <summary>⑥ 主機淡水冷卻器（Main F.W. Cooler）</summary>
+        <p>主機淡水冷卻器負責將主機淡水回路中的熱量傳給海水，維持主機缸套與上部結構溫度。它是「內循環淡水」與「外循環海水」之間的熱交換界面，對整體熱平衡非常關鍵。</p>
+      </details>
+
+      <details id="mc_7">
+        <summary>⑦ 淡水製造器（F.W. Generator）</summary>
+        <p>淡水製造器通常採減壓閃蒸方式，利用主機餘熱或蒸汽加熱海水，在低壓下蒸發後再冷凝成淡水。主冷卻海水負責冷凝段的冷卻，決定淡水產量與品質。</p>
+      </details>
+
+      <details id="mc_8">
+        <summary>⑧ 噴射器（Ejector Pump）</summary>
+        <p>噴射器利用高速海水流在文氏管中形成負壓，將淡水製造器內部氣體與非凝結性氣體抽出，使其保持真空狀態。真空度不足會直接降低淡水產量，因此噴射器運轉狀況需密切監控。</p>
+      </details>
+
+      <details id="mc_9">
+        <summary>⑨ 加藥槽（Chemical Tank）</summary>
+        <p>加藥槽用於向淡水系統或冷卻水中加入防蝕、防垢或殺菌藥劑。適當的化學處理可減少管束結垢與腐蝕，延長設備壽命，並降低熱交換效率下降的風險。</p>
+      </details>
+
+      <details id="mc_10">
+        <summary>⑩ 排出至外海（Overboard Discharge）</summary>
+        <p>經過各冷卻器與淡水製造器後的海水，最後由排放管路送至船外。排出點位置須符合船體結構與相關環保規範，操作時需注意不可與艙底水或其他污染物混流，以免違反排放標準。</p>
+      </details>
+
+    </section>
+  </main>
+
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | MAIN COOLING S.W. SYSTEM</div>
+
+  <script>
+    function toggleDetail(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      const all = document.querySelectorAll('#detailsSection details');
+      all.forEach(d => { if (d !== el) d.removeAttribute('open'); });
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  </script>
+</body>
+</html>

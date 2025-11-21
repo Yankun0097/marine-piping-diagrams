@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>主機燃油服務系統 — 互動詳解版</title>
+  <style>
+    :root{
+      --orange:#f28c28; --blue:#1f78d1; --green:#3aa66b;
+      --red:#ff0000; --pink:#ff8fbf;
+      --deepyellow:#e6b800; --lightyellow:#fff8b0;
+      --black:#000000; --grey:#808080; --silver:#c0c0c0;
+      --ink:#0f172a; --muted:#475569; --bg:#fbfbfd;
+      --border:#e5e7eb; --accent:#0ea5e9;
+    }
+    html,body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.6 'Noto Sans TC','Microsoft JhengHei',sans-serif;
+    }
+    header{
+      position:sticky;top:0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      padding:16px 24px;
+      z-index:8;
+    }
+    h1{margin:0;font-size:1.3rem}
+    .subtitle{color:var(--muted);font-size:.95rem;margin-top:4px}
+    main{
+      max-width:1080px;
+      margin:auto;
+      padding:24px;
+      display:grid;
+      grid-template-columns:340px 1fr;
+      gap:24px;
+    }
+    @media (max-width:960px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px 20px;
+      box-shadow:0 1px 2px rgba(15,23,42,.05);
+    }
+    .diagram{
+      width:100%;
+      border-radius:8px;
+      border:1px solid var(--border);
+      position:relative;
+    }
+    .hotspot{
+      position:absolute;
+      width:22px;height:22px;
+      border-radius:50%;
+      cursor:pointer;
+      opacity:0.35;
+      transition:all .2s ease-in-out;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hotspot:hover{
+      opacity:1;
+      transform:scale(1.2);
+    }
+    .tooltip{
+      position:absolute;
+      top:-28px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.8);
+      color:#fff;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:.8rem;
+      white-space:nowrap;
+      display:none;
+    }
+    .hotspot:hover .tooltip{display:block}
+    .legend{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px dashed var(--border);
+      border-radius:10px;
+      padding:8px;
+      background:#fff;
+    }
+    .swatch{width:18px;height:18px;border-radius:4px}
+    .blue{background:var(--blue)}
+    .green{background:var(--green)}
+    .red{background:var(--red)}
+    .pink{background:var(--pink)}
+    .deepyellow{background:var(--deepyellow)}
+    .lightyellow{background:var(--lightyellow)}
+    .black{background:var(--black)}
+    .grey{background:var(--grey)}
+    .silver{background:var(--silver)}
+    .orange{background:var(--orange)}
+    .note{
+      border-left:4px solid var(--accent);
+      background:#eff6ff;
+      padding:10px 14px;
+      margin-top:8px;
+      border-radius:8px;
+    }
+    details{
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-top:10px;
+      padding:10px 14px;
+      background:#fff;
+    }
+    details summary{font-weight:bold;cursor:pointer}
+    .footer-tag{
+      position:fixed;
+      right:16px;bottom:16px;
+      background:#ffffff;
+      border:1px solid var(--border);
+      box-shadow:0 1px 3px rgba(0,0,0,.08);
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+    .brand{font-weight:600}
+    ul.hotspot-map{padding-left:1.1rem;margin:0.4rem 0 0;}
+    ul.hotspot-map li{margin:2px 0;font-size:0.9rem;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚢 船舶管路系統互動教學 (Interactive Marine Systems Training)</h1>
+    <div class="subtitle">主機燃油服務系統｜M/E F.O. SERV. SYSTEM</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>顏色圖例（管路顏色）</h2>
+      <div class="legend">
+        <div class="chip"><span class="swatch blue"></span> 藍色：淡水管路</div>
+        <div class="chip"><span class="swatch green"></span> 綠色：海水管路</div>
+        <div class="chip"><span class="swatch red"></span> 紅色：燃油管路（重油）</div>
+        <div class="chip"><span class="swatch pink"></span> 粉紅色：柴油管路</div>
+        <div class="chip"><span class="swatch deepyellow"></span> 深黃色：滑油管路</div>
+        <div class="chip"><span class="swatch black"></span> 黑色：艙底水、衛生水管路</div>
+        <div class="chip"><span class="swatch grey"></span> 灰色：空氣管路</div>
+        <div class="chip"><span class="swatch silver"></span> 銀色：蒸汽、排氣管路</div>
+        <div class="chip"><span class="swatch orange"></span> 橙色：排放/放空線（Drain / Discharge）</div>
+        <div class="chip"><span class="swatch lightyellow"></span> 淺黃色：關鍵設備與儀錶（Key Equipment &amp; Instruments）</div>
+      </div>
+
+      <h3 style="margin-top:18px;">①～⑩ 熱點顏色對照說明</h3>
+      <p style="margin:0 0 4px;font-size:0.9rem;">圓點顏色大致對應該設備所屬之管路或功能類型：</p>
+      <ul class="hotspot-map">
+        <li><span style="font-weight:600;">① 主機燃油入口</span> — 紅色：主機燃油供油線。</li>
+        <li><span style="font-weight:600;">② 重油回油接收槽</span> — 淺黃色：重要燃油儲槽／節點。</li>
+        <li><span style="font-weight:600;">③ 自動脫氣閥</span> — 淺黃色：關鍵自動控制閥。</li>
+        <li><span style="font-weight:600;">④ 柴油服務艙</span> — 粉紅色：柴油相關管路與艙櫃。</li>
+        <li><span style="font-weight:600;">⑤ 重油服務艙</span> — 紅色：重油儲存與供應來源。</li>
+        <li><span style="font-weight:600;">⑥ 燃油粗濾器</span> — 紅色：燃油處理設備，仍屬重油系統。</li>
+        <li><span style="font-weight:600;">⑦ 通往發電機燃油管</span> — 紅色：主機系統延伸到發電機之燃油分支。</li>
+        <li><span style="font-weight:600;">⑧ 黏度偵測器</span> — 淺黃色：關鍵控制儀錶。</li>
+        <li><span style="font-weight:600;">⑨ 重油加熱器</span> — 紅色：加熱以調整燃油黏度之設備。</li>
+        <li><span style="font-weight:600;">⑩ 重油供油泵</span> — 紅色：將重油壓送至主機／分油機之主動設備。</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>互動式管路圖（滑鼠移至圓點顯示名稱，點擊展開下方詳細說明）</h2>
+      <div style="position:relative;">
+        <img class="diagram" src="ME F.O. SERV.SYSTEM.jpg" alt="M/E F.O. SERV. SYSTEM" />
+        <!-- ①～⑩ 熱點；座標為依圖面大致估計，可依需要微調 -->
+        <div class="hotspot" style="top:18%;left:15%;background:var(--red);" onclick="toggleDetail('mefo_1')">
+          <div class="tooltip">① 主機燃油入口（F.O. Inlet）</div>
+        </div>
+        <div class="hotspot" style="top:30%;left:45%;background:var(--lightyellow);" onclick="toggleDetail('mefo_2')">
+          <div class="tooltip">② 重油回油接收槽（F.O. Return Oil Receiver）</div>
+        </div>
+        <div class="hotspot" style="top:15%;left:62%;background:var(--lightyellow);" onclick="toggleDetail('mefo_3')">
+          <div class="tooltip">③ 自動脫氣閥（Auto Degas Valve）</div>
+        </div>
+        <div class="hotspot" style="top:18%;left:75%;background:var(--pink);" onclick="toggleDetail('mefo_4')">
+          <div class="tooltip">④ 柴油服務艙（D.O. Service Tank）</div>
+        </div>
+        <div class="hotspot" style="top:23%;left:85%;background:var(--red);" onclick="toggleDetail('mefo_5')">
+          <div class="tooltip">⑤ 重油服務艙（LSFO / HFO Service Tanks）</div>
+        </div>
+        <div class="hotspot" style="top:36%;left:86%;background:var(--red);" onclick="toggleDetail('mefo_6')">
+          <div class="tooltip">⑥ 燃油粗濾器（F.O. Filter）</div>
+        </div>
+        <div class="hotspot" style="top:63%;left:27%;background:var(--red);" onclick="toggleDetail('mefo_7')">
+          <div class="tooltip">⑦ 通往發電機燃油供油管（To G/E）</div>
+        </div>
+        <div class="hotspot" style="top:69%;left:60%;background:var(--lightyellow);" onclick="toggleDetail('mefo_8')">
+          <div class="tooltip">⑧ 黏度偵測器（Viscosity Detector）</div>
+        </div>
+        <div class="hotspot" style="top:55%;left:55%;background:var(--red);" onclick="toggleDetail('mefo_9')">
+          <div class="tooltip">⑨ 重油加熱器（F.O. Heater）</div>
+        </div>
+        <div class="hotspot" style="top:58%;left:83%;background:var(--red);" onclick="toggleDetail('mefo_10')">
+          <div class="tooltip">⑩ 重油供油泵（F.O. Supply Pumps）</div>
+        </div>
+      </div>
+      <div class="note">
+        💡 圓點位置以百分比方式配置，如與圖上 ①～⑩ 實際位置略有差異，可直接調整各熱點的
+        <code>top</code> / <code>left</code> 百分比進行微調。
+      </div>
+    </section>
+
+    <section class="card" id="detailsSection">
+      <h2>系統關鍵部件與流程概述（對應 ①～⑩）</h2>
+
+      <details id="mefo_1">
+        <summary>① 主機燃油入口（F.O. Inlet）</summary>
+        <p>主機燃油入口為高壓噴射系統的起點，來自燃油供油泵與加熱器。此處壓力與溫度必須穩定，才能保證噴油器霧化品質與燃燒效率。</p>
+      </details>
+
+      <details id="mefo_2">
+        <summary>② 重油回油接收槽（F.O. Return Oil Receiver）</summary>
+        <p>重油噴射未使用部分以及洩漏油會回流至此接收槽，藉由回油穩壓與緩衝，避免系統壓力大幅波動；同時亦可藉由回油溫度判斷燃油加熱狀況。</p>
+      </details>
+
+      <details id="mefo_3">
+        <summary>③ 自動脫氣閥（Auto Degas Valve）</summary>
+        <p>重油在加熱或壓送過程中常夾帶氣泡，自動脫氣閥可將系統高點的氣體自動排出，避免泵浦「打空」或燃油流量不穩，對長時間航行相當重要。</p>
+      </details>
+
+      <details id="mefo_4">
+        <summary>④ 柴油服務艙（D.O. Service Tank）</summary>
+        <p>在主機啟動、停車或環保管制水域（ECA）時，常需使用較乾淨的柴油。此艙儲存已沉降與處理過的柴油，透過切換閥可在重油與柴油間平順切換。</p>
+      </details>
+
+      <details id="mefo_5">
+        <summary>⑤ 重油服務艙（LSFO / HFO Service Tanks）</summary>
+        <p>服務艙通常設有低硫重油（LSFO）與一般高硫重油（HFO），經分油機處理後儲存在此處，再送往加熱器與主機。操作時需注意溫度維持與艙內水份累積狀況。</p>
+      </details>
+
+      <details id="mefo_6">
+        <summary>⑥ 燃油粗濾器（F.O. Filter）</summary>
+        <p>粗濾器負責去除較大顆粒雜質，保護後端的燃油泵與噴射系統。壓差增加代表濾芯堵塞，需排污或更換，以免造成供油壓力不足。</p>
+      </details>
+
+      <details id="mefo_7">
+        <summary>⑦ 通往發電機燃油供油管（To G/E）</summary>
+        <p>此分支將處理後的重油或柴油送往發電機，通常配有獨立的供油泵與加熱設備。理解主機與發電機系統之間的連通關係，有助於避免錯送油或交互影響。</p>
+      </details>
+
+      <details id="mefo_8">
+        <summary>⑧ 黏度偵測器（Viscosity Detector）</summary>
+        <p>黏度偵測器在線量測燃油黏度，並輸出訊號給自動控制器調整加熱蒸汽量，以維持噴射前燃油黏度在設計值（例如 10–15 cSt）。此裝置直接決定燃燒效率與排放表現。</p>
+      </details>
+
+      <details id="mefo_9">
+        <summary>⑨ 重油加熱器（F.O. Heater）</summary>
+        <p>利用蒸汽或熱油將重油加熱，使其黏度降低到適合分油與噴射的範圍。操作時需監看進出口溫度與壓差，並注意防止局部過熱造成油焦。</p>
+      </details>
+
+      <details id="mefo_10">
+        <summary>⑩ 重油供油泵（F.O. Supply Pumps）</summary>
+        <p>供油泵將重油由服務艙送往主機與燃油加熱器，確保系統具備足夠壓力與流量。常見配置為雙泵一用一備，輪流運轉以維持可靠度。</p>
+      </details>
+
+    </section>
+  </main>
+
+  <div class="footer-tag"><span class="brand">Interactive</span> • Version 1.0 | M/E F.O. SERV. SYSTEM</div>
+
+  <script>
+    function toggleDetail(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      const all = document.querySelectorAll('#detailsSection details');
+      all.forEach(d => { if (d !== el) d.removeAttribute('open'); });
+      el.toggleAttribute('open');
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  </script>
+</body>
+</html>
